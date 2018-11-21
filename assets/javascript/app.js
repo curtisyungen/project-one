@@ -1,20 +1,20 @@
-$(document).on("change", "#search", function() {
-  var searchTerm = $(this).val();
+$(document).on("change", "#search", function () {
+    var searchTerm = $(this).val();
 });
 
 // ============================================================================================================================
-// Edamam API / Ajax
+// Yummly API / Ajax
 // ============================================================================================================================
 
-// var queryURL = "https://api.edamam.com/search?app_id=06d1311e&app_key=f04ff3a316728eacadf3124247657efc&q=" + searchTerm
+// var queryURL = "http://api.yummly.com/v1/api/recipes?_app_id=1280f0ef&_app_key=c6dea6bf830227615c86bf87458ee3a8&q=onion"
 
-var baseURL = "https://api.edamam.com/search?";
-var API_KEY = "f04ff3a316728eacadf3124247657efc";
-var APP_ID = "06d1311e";
+var baseURL = "http://api.yummly.com/v1/api/recipes?_";
+var API_KEY = "c6dea6bf830227615c86bf87458ee3a8";
+var APP_ID = "1280f0ef";
 var searchTerm = "green bean casserole";
 var searchLimit = 1;             // can be set by user
 
-var queryURL = `${baseURL}app_id=${APP_ID}&app_key=${API_KEY}&q=${searchTerm}`;
+var queryURL = `${baseURL}app_id=${APP_ID}&_app_key=${API_KEY}&q=${searchTerm}`;
 
 // ================
 // Recipe Object
@@ -37,11 +37,13 @@ var recipe = {
 $.ajax({
     url: queryURL,
     method: "GET"
-}).then(function(response) {
+}).then(function (response) {
+
+    console.log(response);
 
     // Extract recipes from Ajax response
 
-    for (var i=0; i<searchLimit; i++) {
+    for (var i = 0; i < searchLimit; i++) {
 
         // Create div for each recipe
 
@@ -70,17 +72,17 @@ $.ajax({
              ${recipe.ingredients} <br>
              ${recipe.image} <br>
              ${recipe.url} <br>`
-            );
+        );
 
         // Create image to append to testDiv
 
         // var testImage = $("<img>");
         // testImage.attr("src", recipe.image);
         // resultDiv.prepend(testImage);
-        
+
         $(".page__content").append(recipeDiv);
 
-	// Console log the object data
+        // Console log the object data
 
         console.log(response.hits[i].recipe);
     }
@@ -89,7 +91,7 @@ $.ajax({
 $(document).on("click", ".recipeDiv", openRecipe);
 
 function openRecipe() {
-  console.log("yes");
+    console.log("yes");
 }
 
 // ============================================================================================================================
