@@ -32,14 +32,12 @@ function crossOffList() {
   var ingredient = $(this);
 
   // If ingredient not yet crossed off, cross it off list
-  
   if (ingredient.attr("data-crossed") == "false") {
     ingredient.css("text-decoration", "line-through");
     ingredient.attr("data-crossed", "true");
   }
 
   // If ingredient already crossed off, uncross it
-  
   else {
     ingredient.css("text-decoration", "none");
     ingredient.attr("data-crossed", "false");
