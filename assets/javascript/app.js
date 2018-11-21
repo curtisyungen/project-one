@@ -94,7 +94,7 @@ $(document).on("tap", ".recipeDiv", function() {
         console.log(response);
 
         recipe.source = response.source.sourceRecipeUrl;
-	getNutrition(response);
+	//getNutrition(response); for addition later
     });
 
     //console.log(recipe);
