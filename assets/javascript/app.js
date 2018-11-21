@@ -1,7 +1,6 @@
 // =========================
 // Global Variables
 // =========================
-
 var APP_KEY = "c6dea6bf830227615c86bf87458ee3a8";
 var APP_ID = "1280f0ef";
 
@@ -50,7 +49,7 @@ $(document).on("change", "#search", function() {
 
         for (var i=0; i < searchLimit; i++) {
 
-            console.log(response.matches[i]);
+            //console.log(response.matches[i]);
 
             recipe.name = response.matches[i].recipeName;
             recipe.id = response.matches[i].id;
@@ -95,10 +94,12 @@ $(document).on("tap", ".recipeDiv", function() {
         console.log(response);
 
         recipe.source = response.source.sourceRecipeUrl;
-
+	getNutrition(response);
     });
 
-    console.log(recipe);
+    //console.log(recipe);
+    addToGroceryList(recipe);
+    
 });
 
 // ============================================================================================================================
