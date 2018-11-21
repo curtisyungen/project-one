@@ -62,7 +62,7 @@ $.ajax({
 });
 });
 
-$(document).on("touch", ".recipeDiv", function () {
+$(document).on("tap", ".recipeDiv", function () {
     var recipeURL = 'http://api.yummly.com/v1/api/recipe/'
     var getRecipe = $(this).attr("data-ID");
     var getURL = `${recipeURL}${getRecipe}?_app_id=${APP_ID}&_app_key=${API_KEY}`;
@@ -83,4 +83,4 @@ $(document).on("touch", ".recipeDiv", function () {
 document.addEventListener('prechange', function (event) {
     document.querySelector('ons-toolbar .center')
         .innerHTML = event.tabItem.getAttribute('label');
-}); 
+});
