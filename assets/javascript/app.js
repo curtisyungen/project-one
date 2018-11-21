@@ -10,6 +10,18 @@ var APP_ID = "1280f0ef";
 // Yummly API Documentation: https://developer.yummly.com/documentation
 // ============================================================================================================================
 
+// =========================
+// Recipe Object
+// =========================
+
+var recipe = {
+    name: "",
+    id: "",
+    ingredients: "",
+    rating: "",
+    source: "",
+}
+
 //** Event for when user searches for recipe
 
 $(document).on("change", "#search", function() {
@@ -18,18 +30,8 @@ $(document).on("change", "#search", function() {
     // Search Criteria
     // =========================
 
-    var searchLimit = 1;                    // can be set by user
+    var searchLimit = 1;               // can be set by user
     var searchTerm = $(this).val();
-
-    // =========================
-    // Recipe Object
-    // =========================
-
-    var recipe = {
-        name: "default",
-        ingredients: "",
-        rating: "",
-    }
 
     // =========================
     // SEARCH Recipe API Query
@@ -48,21 +50,26 @@ $(document).on("change", "#search", function() {
 
         for (var i=0; i < searchLimit; i++) {
 
+            console.log(response.matches[i]);
+
             recipe.name = response.matches[i].recipeName;
             recipe.id = response.matches[i].id;
+            recipe.ingredients = response.matches[i].ingredients;
+            recipe.rating = response.matches[i].rating;
 
-            var result = $("<div>");
+            var recipeDiv = $("<div>");
 
-            result.addClass("recipeDiv");
+            recipeDiv.addClass("recipeDiv");
 
-            result.attr("data-name", recipe.name);
-            result.attr("data-id", recipe.id);
+            recipeDiv.attr("data-name", recipe.name);
+            recipeDiv.attr("data-id", recipe.id);
+            recipeDiv.attr("data-rating", recipe.rating);
 
-            result.html(
+            recipeDiv.html(
                 `${recipe.name}`
             );
 
-            $("#recipeList").append(result);
+            $("#recipeList").append(recipeDiv);
         }
     });
 });
@@ -78,16 +85,20 @@ $(document).on("tap", ".recipeDiv", function() {
     // Get Recipe URL Format: http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY
 
     var base_getRecipeUrl = "http://api.yummly.com/v1/api/recipe/";
-    var recipeId = $(this).attr("data-id");
-    var getRecipeUrl = `${base_getRecipeUrl}${recipeId}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
+    var getRecipeUrl = `${base_getRecipeUrl}${recipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
     $.ajax({
         url: getRecipeUrl,
         method: "GET",
     })
-    .then(function(recipe) {
-        console.log(recipe);
+    .then(function(response) {
+        console.log(response);
+
+        recipe.source = response.source.sourceRecipeUrl;
+
     });
+
+    console.log(recipe);
 });
 
 // ============================================================================================================================
