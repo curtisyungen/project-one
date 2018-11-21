@@ -7,11 +7,12 @@ $(document).on("change", "#search", function () {
 // ============================================================================================================================
 
 // var queryURL = "http://api.yummly.com/v1/api/recipes?_app_id=1280f0ef&_app_key=c6dea6bf830227615c86bf87458ee3a8&q=onion"
+// https://developer.yummly.com/documentation
 
 var baseURL = "http://api.yummly.com/v1/api/recipes?_";
 var API_KEY = "c6dea6bf830227615c86bf87458ee3a8";
 var APP_ID = "1280f0ef";
-var searchTerm = "green bean casserole";
+var searchTerm = "chicken";
 var searchLimit = 1;             // can be set by user
 
 var queryURL = `${baseURL}app_id=${APP_ID}&_app_key=${API_KEY}&q=${searchTerm}`;
@@ -22,12 +23,9 @@ var queryURL = `${baseURL}app_id=${APP_ID}&_app_key=${API_KEY}&q=${searchTerm}`;
 
 var recipe = {
     name: "default",
-    // rating: 5,
     ingredients: "",
-    dietLabels: "",
-    image: "",
-    // difficulty: 5,
-    url: "",
+    rating: "", 
+
 }
 
 // ================
@@ -39,60 +37,26 @@ $.ajax({
     method: "GET"
 }).then(function (response) {
 
-    console.log(response);
-
     // Extract recipes from Ajax response
 
     for (var i = 0; i < searchLimit; i++) {
+        console.log(response.matches[i]);
+        recipe.name = response.matches[i].recipeName;
+        // recipe.ingredients = response.matches[i].ingredients;
+        // recipe.rating = response.matches[i].rating;
 
-        // Create div for each recipe
+        var result = $("<div>");
 
-        var resultDiv = $("<div>");
+        result.addClass("recipeDiv");
+        result.attr("id", i);
 
-        // Give recipe a class
-
-        resultDiv.addClass("recipeDiv");
-
-        // Give an id to each recipe
-
-        resultDiv.attr("id", i);
-
-        // Add data to recipe object
-
-        recipe.name = response.hits[i].recipe.label;
-        recipe.ingredients = response.hits[i].recipe.ingredientLines;
-        //recipe.dietLabels = response.hits[i].recipe.dietLabels;
-        //recipe.image = response.hits[i].recipe.image;
-        //recipe.url = response.hits[i].recipe.url;
-
-        // Add object info to div for display
-
-        resultDiv.html(
-            `${recipe.name} <br>
-             ${recipe.ingredients} <br>
-             ${recipe.image} <br>
-             ${recipe.url} <br>`
+        result.html(
+            `${recipe.name}`
         );
 
-        // Create image to append to testDiv
-
-        // var testImage = $("<img>");
-        // testImage.attr("src", recipe.image);
-        // resultDiv.prepend(testImage);
-
-        $(".page__content").append(recipeDiv);
-
-        // Console log the object data
-
-        console.log(response.hits[i].recipe);
+        $(".page__content").append(result);
     }
 });
-
-$(document).on("click", ".recipeDiv", openRecipe);
-
-function openRecipe() {
-    console.log("yes");
-}
 
 // ============================================================================================================================
 // Onsen UI    
