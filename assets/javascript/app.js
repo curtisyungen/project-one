@@ -1,6 +1,9 @@
+var API_KEY = "c6dea6bf830227615c86bf87458ee3a8";
+var APP_ID = "1280f0ef";
+
 $(document).on("change", "#search", function () {
-    var searchTerm = $(this).val();
-});
+
+
 
 // ============================================================================================================================
 // Yummly API / Ajax
@@ -10,10 +13,8 @@ $(document).on("change", "#search", function () {
 // https://developer.yummly.com/documentation
 
 var baseURL = "http://api.yummly.com/v1/api/recipes?_";
-var API_KEY = "c6dea6bf830227615c86bf87458ee3a8";
-var APP_ID = "1280f0ef";
-var searchTerm = "chicken";
-var searchLimit = 1;             // can be set by user
+var searchTerm = $(this).val();
+var searchLimit = 10;             // can be set by user
 
 var queryURL = `${baseURL}app_id=${APP_ID}&_app_key=${API_KEY}&q=${searchTerm}`;
 
@@ -36,12 +37,13 @@ $.ajax({
     url: queryURL,
     method: "GET"
 }).then(function (response) {
-
+    console.log(response);
     // Extract recipes from Ajax response
 
     for (var i = 0; i < searchLimit; i++) {
         console.log(response.matches[i]);
         recipe.name = response.matches[i].recipeName;
+        recipeID = response.matches[i].id;
         // recipe.ingredients = response.matches[i].ingredients;
         // recipe.rating = response.matches[i].rating;
 
@@ -49,15 +51,31 @@ $.ajax({
 
         result.addClass("recipeDiv");
         result.attr("id", i);
+        result.attr("data-ID", recipeID);
 
         result.html(
             `${recipe.name}`
         );
 
-        $(".page__content").append(result);
+        $("#recipeList").append(result);
     }
 });
+});
 
+$(document).on("tap", ".recipeDiv", function () {
+    var recipeURL = 'http://api.yummly.com/v1/api/recipe/'
+    var getRecipe = $(this).attr("data-ID");
+    var getURL = `${recipeURL}${getRecipe}?_app_id=${APP_ID}&_app_key=${API_KEY}`;
+
+    $.ajax({
+        url: getURL,
+        method:"GET",
+    })
+    .then(function(recipe){
+        console.log(recipe);
+    });
+    // "http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY"
+});
 // ============================================================================================================================
 // Onsen UI    
 // ============================================================================================================================
@@ -65,4 +83,4 @@ $.ajax({
 document.addEventListener('prechange', function (event) {
     document.querySelector('ons-toolbar .center')
         .innerHTML = event.tabItem.getAttribute('label');
-}); 
+});
