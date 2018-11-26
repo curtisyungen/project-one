@@ -18,6 +18,7 @@ var recipe = {
     id: "",
     ingredients: "",
     rating: "",
+    imageUrl: "",
     source: "",
 }
 
@@ -49,12 +50,13 @@ $(document).on("change", "#search", function() {
 
         for (var i=0; i < searchLimit; i++) {
 
-            //console.log(response.matches[i]);
+            console.log(response.matches[i]);
 
             recipe.name = response.matches[i].recipeName;
             recipe.id = response.matches[i].id;
             recipe.ingredients = response.matches[i].ingredients;
             recipe.rating = response.matches[i].rating;
+            recipe.imageUrl = response.matches[i].smallImageUrls[0];
 
             var recipeDiv = $("<div>");
 
@@ -65,10 +67,10 @@ $(document).on("change", "#search", function() {
             recipeDiv.attr("data-rating", recipe.rating);
 
             recipeDiv.html(
-                `${recipe.name}`
+                `<img src=${recipe.imageUrl}> <span>${recipe.name}</span>`
             );
 
-            $("#recipeList").append(recipeDiv);
+            $("#recipeList").prepend(recipeDiv);
         }
     });
 });
