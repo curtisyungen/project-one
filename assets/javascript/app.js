@@ -77,6 +77,10 @@ $(document).on("change", "#search", function() {
 
 //** Event for when user clicks on recipe
 
+// This is not the correct sequence of events. We'll want to create a function that opens the 
+// recipe window instead of adding it to the ingredient list. This current function should
+// be called once the User decides to select this particular recipe.
+
 $(document).on("tap", ".recipeDiv", function() {
 
     // =========================
