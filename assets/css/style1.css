@@ -1,8 +1,21 @@
 .recipeDiv {
-  font-size: 14px;
-  line-height: 14px;
+  border: 1px solid #555555;
+  font-size: 20px;
+  height: auto;
+  line-height: 20px;
   margin-left: 15px;
-  padding: 2px;
-  text-align: center;  
-  width: auto; 
+  margin-right: 15px;
+  min-height: 60px;
+  padding: 3px;
+  text-align: left;  
+  width: auto;
+}
+
+img {
+  float: left;
+  margin-right: 3px;
+}
+
+span {
+  float: left;
 }
