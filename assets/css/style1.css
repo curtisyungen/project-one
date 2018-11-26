@@ -1,6 +1,6 @@
 .recipeDiv {
   border: 1px solid #555555;
-  font-size: 20px;
+  font-size: 16px;
   height: auto;
   line-height: 20px;
   margin-left: 15px;
@@ -9,6 +9,10 @@
   padding: 3px;
   text-align: left;  
   width: auto;
+}
+
+.recipeDiv:hover {
+  background: lightgray;
 }
 
 img {
