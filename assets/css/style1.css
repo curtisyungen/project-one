@@ -15,6 +15,11 @@
   background: lightgray;
 }
 
+.recipeDiv:active {
+  background: lightblue;
+  border: 1px solid blue;
+}
+
 img {
   float: left;
   margin-right: 3px;
