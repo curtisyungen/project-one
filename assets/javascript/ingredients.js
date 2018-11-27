@@ -6,19 +6,32 @@
 
 function addToGroceryList(recipe) {
 
-  var ingredientList = recipe.ingredients;
+  var ingredients = recipe.ingredients;
+  var ingrList = $("<div>");
+  ingrList.addClass("ingredientList");
+  ingrList.attr("id", recipe.id);
   
-  for (var i=0; i<ingredientList.length; i++) {
-    var ingredient = $("<div>");
-    ingredient.addClass("ingredient");
-    ingredient.attr("data-crossed", "false");
+  for (var i=0; i<ingredients.length; i++) {
 
-    ingredient.html(
-      `${ingredientList[i]}`,
-    );
+    var ingr = $("<div>");
 
-    $("#Tab2 .page__content").append(ingredient); // Rename this ID later
-  }  
+    ingr.text(ingredients[i]);
+    ingr.addClass("ingredient");
+    ingr.attr("data-crossed", "false");
+
+    ingrList.append(ingr);
+    
+  }
+
+  $("#groceryList").append(ingrList);
+}
+
+// This function removes the ingredients for a specific recipe from the grocery list
+
+function removeFromGroceryList(recipe) {
+
+  $(`#${recipe.id}`).remove();
+
 }
 
 // Listen for if ingredient is tapped
