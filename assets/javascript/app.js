@@ -13,24 +13,22 @@ var APP_ID = "1280f0ef";
 // Recipe Object
 // =========================
 
-var recipe = {
-    name: "",
-    id: "",
-    ingredients: "",
-    rating: "",
-    imageUrl: "",
-    source: "",
-}
+var recipeArray = [];
 
 //** Event for when user searches for recipe
 
 $(document).on("change", "#search", function() {
 
+    // Clear search result list
+
+    $("#recipeList").empty();
+    recipeArray = [];
+
     // =========================
     // Search Criteria
     // =========================
 
-    var searchLimit = 1;               // can be set by user
+    var searchLimit = 2;               // can be set by user
     var searchTerm = $(this).val();
 
     // =========================
@@ -50,61 +48,96 @@ $(document).on("change", "#search", function() {
 
         for (var i=0; i < searchLimit; i++) {
 
-            console.log(response.matches[i]);
+	    var recipe = {
+              name: "",
+              id: "",
+              arrayId: "",
+              ingredients: [],
+              rating: "",
+              smallImageUrl: "",
+              source: "",
+            }
 
             recipe.name = response.matches[i].recipeName;
             recipe.id = response.matches[i].id;
+            recipe.arrayId = i;
             recipe.ingredients = response.matches[i].ingredients;
             recipe.rating = response.matches[i].rating;
-            recipe.imageUrl = response.matches[i].smallImageUrls[0];
+            recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
+
+	    recipeArray.push(recipe);
 
             var recipeDiv = $("<div>");
 
             recipeDiv.addClass("recipeDiv");
 
-            recipeDiv.attr("data-name", recipe.name);
-            recipeDiv.attr("data-id", recipe.id);
-            recipeDiv.attr("data-rating", recipe.rating);
-
             recipeDiv.html(
-                `<img src=${recipe.imageUrl}> <span>${recipe.name}</span>`
+                `<img src=${recipe.smallImgUrl}> 
+                 <span>${recipe.name}</span> 
+                 <div class="select" data-arrayId=${recipe.arrayId}>Select</div>`
             );
 
-            $("#recipeList").prepend(recipeDiv);
+            $("#recipeList").append(recipeDiv);
         }
     });
 });
 
-//** Event for when user clicks on recipe
-
-// This is not the correct sequence of events. We'll want to create a function that opens the 
-// recipe window instead of adding it to the ingredient list. This current function should
-// be called once the User decides to select this particular recipe.
+//** Event for when user clicks on recipe to view DETAILS
 
 $(document).on("tap", ".recipeDiv", function() {
 
-    // =========================
-    // GET Recipe Ajax Query
-    // =========================
+    // ***** TO BE WRITTEN *****
 
-    // Get Recipe URL Format: http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY
+});
 
-    var base_getRecipeUrl = "http://api.yummly.com/v1/api/recipe/";
-    var getRecipeUrl = `${base_getRecipeUrl}${recipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
+//** Event for when user clicks SELECT, indicating an intent to make this recipe
 
-    $.ajax({
-        url: getRecipeUrl,
-        method: "GET",
-    })
-    .then(function(response) {
-        console.log(response);
+$(document).on("tap", ".select", function() {
 
-        recipe.source = response.source.sourceRecipeUrl;
-	//getNutrition(response); for addition later
-    });
+    var selected = $(this);
 
-    //console.log(recipe);
-    addToGroceryList(recipe);
+    // Get the ingredients from the selected recipe
+
+    var getArrayId = $(this).attr("data-arrayId");
+    var selectedRecipe = recipeArray[getArrayId];
+
+    // Toggle whether or not a particular recipe is selected or not
+
+    if (selected.attr("data-selected") == "true") {
+        selected.text("Select");
+        selected.css("color", "black");
+        selected.attr("data-selected", "false");
+
+        removeFromGroceryList(selectedRecipe);
+    }
+    else {
+        selected.text("Selected");
+        selected.css("color", "blue");
+        selected.attr("data-selected", "true");
+    
+        // =========================
+        // GET Recipe Ajax Query
+        // =========================
+
+        // Get Recipe URL Format: http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY
+
+        var base_getRecipeUrl = "http://api.yummly.com/v1/api/recipe/";
+        var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
+
+        $.ajax({
+            url: getRecipeUrl,
+            method: "GET",
+        })
+        .then(function(response) {
+            //console.log(response);
+
+            selectedRecipe.source = response.source.sourceRecipeUrl;
+            //getNutrition(response); for addition later
+        
+        });
+
+        addToGroceryList(selectedRecipe);
+    }
     
 });
 
