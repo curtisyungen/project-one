@@ -1,8 +1,17 @@
 .ingredientList {
-  border: 1px solid #666666;
-  margin-top: 3px;
-  max-width: 40%;
-  padding: 5px;
+  background: #f8f8f8;
+  border: 1px solid #cfcfcf;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 5px 0px 0px 0px;
+  padding: 10px;
+}
+
+.ingredient {
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .recipeDiv {
@@ -38,11 +47,14 @@ span {
 
 .select {
   background: #lightgreen;
+  border: 1px solid #cfcfcf;
+  border-radius: 15%;
   float: right;
   font-size: 14px;
   height: auto;
   line-height: 14px;
   margin: 0px;
+  margin-top: -1px;
   padding: 23px 3px 23px 3px;
 }
 
