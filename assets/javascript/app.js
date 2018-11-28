@@ -45,8 +45,25 @@ $(document).on("change", "#search", function () {
         method: "GET"
     })
         .then(function (response) {
-            //console.log(response);
-
+            var btnDiv = $("<div>");
+            var selectAllBtn = $("<input>");
+            var unselectAllBtn = $("<input>");
+            selectAllBtn.attr("type", "button");
+            selectAllBtn.attr("id", "selectAll");
+            selectAllBtn.attr("value", "Select All");
+            selectAllBtn.attr("style", "float:right;width: 120px;");
+            // selectAllBtn.attr("style","float: right;");
+            unselectAllBtn.attr("type", "button");
+            unselectAllBtn.attr("id", "unselectAll");
+            unselectAllBtn.attr("value", "Unselect All");
+            unselectAllBtn.attr("style", "float:right;width: 120px;");
+            btnDiv.attr("style", "padding-right: 20px; margin-bottom: 20px;");
+            btnDiv.append(selectAllBtn);
+            btnDiv.append("<br>");
+            btnDiv.append(unselectAllBtn);
+            // console.log("select id", selectAllBtn.attr("id"));
+            // console.log("unselect id", unselectAllBtn.attr("id"));
+            $("#recipeList").append(btnDiv);
             for (var i = 0; i < searchLimit; i++) {
 
                 var recipe = {
@@ -55,8 +72,7 @@ $(document).on("change", "#search", function () {
                     arrayId: "",
                     ingredients: [],
                     rating: "",
-                    smallImgUrl: "",
-                    otherImgUrl: "",
+                    smallImageUrl: "",
                     source: "",
                 }
 
@@ -66,41 +82,59 @@ $(document).on("change", "#search", function () {
                 recipe.ingredients = response.matches[i].ingredients;
                 recipe.rating = response.matches[i].rating;
                 recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
-                recipe.otherImgUrl = response.matches[i].imageUrlsBySize;
 
                 recipeArray.push(recipe);
-
+                var containerDiv = $("<div>");
                 var recipeDiv = $("<div>");
+                var input = $("<input>");
+
                 recipeDiv.addClass("recipeDiv");
-
-                var subDiv = $("<div>");
-                subDiv.addClass("subDiv");
-                subDiv.attr("data-arrayId", recipe.arrayId);
-                subDiv.html(
-                    `<img src=${recipe.smallImgUrl}> 
+                recipeDiv.attr("data-arrayId", recipe.arrayId);
+                recipeDiv.html(
+                    `<img src=${recipe.smallImgUrl}>
                     <span>${recipe.name}</span>`
+
+
                 );
+                input.addClass("select");
+                input.attr("type", "checkbox");
+                input.attr("style", "zoom:2.5;");
+                input.attr("name", "checkBox");
+                input.attr("data-arrayId", recipe.arrayId);
 
-                recipeDiv.append(subDiv);
-                var selectDiv = $("<div>");
+                containerDiv.prepend(recipeDiv);
+                containerDiv.prepend(input);
+                $("#recipeList").append(containerDiv);
 
-                selectDiv.addClass("select");
-                selectDiv.attr("data-arrayId", recipe.arrayId);
-                selectDiv.text("Select");
-
-                recipeDiv.append(selectDiv);
-
-                $("#recipeList").append(recipeDiv);
             }
         });
 });
-
+$(document).on("click", "#selectAll", function () {
+    var items = document.getElementsByName('checkBox');
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].type == 'checkbox')
+            items[i].checked = true;
+    }
+    for(var i=0;i<recipeArray.length;i++){
+        addToGroceryList(recipeArray[i]);
+    }
+});
+$(document).on("click", "#unselectAll", function () {
+    var items = document.getElementsByName('checkBox');
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].type == 'checkbox')
+            items[i].checked = false;
+    }
+    for(var i=0;i<recipeArray.length;i++){
+        removeFromGroceryList(recipeArray[i]);
+    }
+});
 
 //** Event for when user clicks SELECT, indicating an intent to make this recipe
 
-$(document).on("tap", ".select", function () {
+$(document).on("click", "input.select", function () {
 
-    var selected = $(this);
+    console.log("whether or not is checked",$(this).prop('checked'));
 
     // Get the ingredients from the selected recipe
 
@@ -109,19 +143,28 @@ $(document).on("tap", ".select", function () {
 
     // Toggle whether or not a particular recipe is selected or not
 
-    if (selected.attr("data-selected") == "true") {
-        selected.text("Select");
-        selected.css("color", "black");
-        selected.css("background", "none");
-        selected.attr("data-selected", "false");
+    if ($(this).prop('checked')== false) {
+        $(this).text("Select");
+        $(this).css("color", "black");
+        $(this).css("background", "none");
+        // $(this).attr("data-selected", "false");
 
         removeFromGroceryList(selectedRecipe);
     }
-    else {
-        selected.text("Selected");
-        selected.css("color", "blue");
-        selected.css("background", "lightblue");
-        selected.attr("data-selected", "true");
+    else if($(this).prop('checked')== true){
+        $(this).text("Selected");
+        $(this).css("color", "blue");
+        $(this).css("background", "lightblue");
+        // $(this).attr("data-selected", "true");
+
+        // =========================
+        // GET Recipe Ajax Query
+        // =========================
+
+        // Get Recipe URL Format: http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY
+
+        var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
+        var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
         addToGroceryList(selectedRecipe);
     }
@@ -130,57 +173,49 @@ $(document).on("tap", ".select", function () {
 
 //** Event for when user clicks on recipe to view DETAILS
 
-$(document).on("tap", ".subDiv", function() {
-
+$(document).on("click", ".recipeDiv", function () {
+    console.log($(this).attr("class"));
+    // Hide search window
     var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
 
     var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
-    $.ajax({
-        url: getRecipeUrl,
-        method: "GET",
-    })
-        .then(function(response) {
+    if ($(this).attr("class") == "select") {
 
-            // Get link to recipe source 
-            var source = response.source.sourceRecipeUrl;
+    }
+    else {
+        $.ajax({
+            url: getRecipeUrl,
+            method: "GET",
+        })
+            .then(function (response) {
 
-	    var recipeDetail = $("<div>");
-            recipeDetail.addClass("recipeDetail");
-
-            recipeDetail.html(
-              `<img src=${selectedRecipe.smallImgUrl}>
-               <br><br><br><br>
-               <h3>${selectedRecipe.name}</h3><br>
-               <h4>Rating: </h4>
-               ${selectedRecipe.rating}<br>
-               <h4>Ingredients: </h4>
-               ${selectedRecipe.ingredients}
-               <h4>Source: </h4>
-               ${source}`
-            );
-
-            // Open the recipe source website in a new window
-            var iFrame = `<div id="sourceWebsite">
+                var source = response.source.sourceRecipeUrl;
+                console.log(source);
+                var iFrame = `<div id="sourceWebsite">
                             <iframe src=${source} id="source"></iframe>
-                          </div>`;
+                        </div>`;
+                console.log($(".display").attr("data-display"));
+                if ($(".display").attr("data-display") == "visible") {
+                    $(".display").attr("data-display", "none");
+                }
+                $('#holder').append(iFrame);
 
-            if ($(".display").attr("data-display") == "visible") {
-                $(".display").attr("data-display", "none");
-            }
+            });
+    }
+    // Open detail view of recipe
 
-            $('#holder').append(recipeDetail);
 
-        });
+
 });
 // ============================================================================================================================
 // Google Images API
 // Google API Documentation: https://developers.google.com/custom-search/docs/overview
 // ============================================================================================================================
 
-$(document).on('tap', '#add-item', function(event) {
+$(document).on('click', '#add-item', function (event) {
     event.preventDefault();
 
     let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
@@ -209,28 +244,23 @@ document.addEventListener('prechange', function (event) {
         .innerHTML = event.tabItem.getAttribute('label');
 });
 
-// ============================================================================================================================
-// PushPage: View Recipe Details  
-// ============================================================================================================================
-
 window.fn = {};
 
 window.fn.pushPage = function (page, anim) {
     if (anim) {
-
         // document.querySelector('#myNavigator').pushPage('page2.html', {data: {title: 'Page 2'}});
+
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title }, animation: anim });
-    } 
-    else {
+    } else {
 
         // page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
+
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title } });
     }
 };
 
-$(document).on("tap", ".subDiv", function () {
-
+$(document).on("click", ".recipeDiv", function () {
     // window.location.href='tab2.html';
-    fn.pushPage({ 'id': 'page.html', 'title': 'Recipe Details' });
+    fn.pushPage({ 'id': 'page.html', 'title': 'Ingredients' });
 
 });
