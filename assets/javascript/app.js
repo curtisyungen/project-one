@@ -135,10 +135,6 @@ $(document).on("click", ".recipeDiv", function() {
     
         var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
         
-        if($(this).attr("class") == "select") {
-
-        }
-        else {
         $.ajax({
             url: getRecipeUrl,
             method: "GET",
@@ -157,7 +153,7 @@ $(document).on("click", ".recipeDiv", function() {
                 $('#holder').append(iFrame);
         
             });
-        }
+        
     // Open detail view of recipe
 
 
