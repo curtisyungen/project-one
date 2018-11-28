@@ -144,6 +144,28 @@ $(document).on("tap", ".subDiv", function() {
     })
         .then(function(response) {
 
+            console.log(response);
+
+            // Compile recipe nutrition info
+
+            var nutritionInfo = response.nutritionEstimates;
+            var nutritionContainerDiv = $("<div>");
+
+	    nutritionContainerDiv.html("<h4>Nutrition Info: </h4>");
+
+	    for (var i=0; i<nutritionInfo.length; i++) {
+              
+	      var nutr = $("<div>");
+              
+              var label = response.nutritionEstimates[i].attribute;
+	      var nutrVal = response.nutritionEstimates[i].value;
+              var nutrUnit = response.nutritionEstimates[i].unit.plural;
+              
+              nutr.text(`${label}: ${nutrVal} ${nutrUnit}`);
+	      nutritionContainerDiv.append(nutr);
+              
+            }
+
             // Get link to recipe source 
             var source = response.source.sourceRecipeUrl;
 
@@ -159,8 +181,10 @@ $(document).on("tap", ".subDiv", function() {
                <h4>Ingredients: </h4>
                ${selectedRecipe.ingredients}
                <h4>Source: </h4>
-               ${source}`
+               ${source}<br>`
             );
+
+            recipeDetail.append(nutritionContainerDiv);
 
             // Open the recipe source website in a new window
             var iFrame = `<div id="sourceWebsite">
