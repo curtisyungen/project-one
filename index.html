@@ -24,6 +24,9 @@
 </head>
 
 <body>
+
+    <!-- BEGIN Tab 1 -->
+    
     <ons-page>
         <ons-toolbar>
             <div class="center">Recipes</div>
@@ -45,30 +48,51 @@
                 <input type="search" value="" id="search" placeholder="Search" class="search-input" style="width: 280px;">
             </p>
 
-            <div id="recipeList">
-                
-            </div>
-          
+            <div id="recipeList"></div>
         </ons-page>
     </template>
+
+    <!-- END Tab 1 -->
+
+    <!-- BEGIN Tab 2 -->
 
     <template id="tab2.html">
         <ons-page id="Tab2">
-
-	<div id="groceryList">
-
+            <div id="groceryList"></div>
         </ons-page>
     </template>
+
+    <!-- END Tab 2 -->
+
+    <!-- BEGIN Tab 3 -->
 
     <template id="tab3.html">
         <ons-page id="Tab3">
-
+            <div id="selectedRecipes"></div>
         </ons-page>
     </template>
 
-    <script src="./assets/javascript/ingredients.js"></script>
-    <script src="./assets/javascript/app.js"></script>
+    <!-- END Tab 3 -->
 
+    <!-- BEGIN Google Image API -->
+
+    <form id="comedian-form">
+        <label for="food-input">Food</label><br>
+        <input type="text" id="food-input"><br>
+
+        <input id="add-item" type="submit" value="Add">
+    </form>
+
+    <br><br><br>
+
+    <div id="google-api-image"></div>
+
+    <!-- END Google Image API -->
+
+    <!-- JAVASCRIPT Links -->
+
+    <script src="./assets/javascript/groceryList.js"></script>
+    <script src="./assets/javascript/app.js"></script>
 
 </body>
 
