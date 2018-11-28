@@ -45,6 +45,7 @@ $(document).on("change", "#search", function () {
         method: "GET"
     })
         .then(function (response) {
+            //console.log(response);
 
             for (var i = 0; i < searchLimit; i++) {
 
@@ -54,7 +55,8 @@ $(document).on("change", "#search", function () {
                     arrayId: "",
                     ingredients: [],
                     rating: "",
-                    smallImageUrl: "",
+                    smallImgUrl: "",
+                    otherImgUrl: "",
                     source: "",
                 }
 
@@ -64,6 +66,7 @@ $(document).on("change", "#search", function () {
                 recipe.ingredients = response.matches[i].ingredients;
                 recipe.rating = response.matches[i].rating;
                 recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
+                recipe.otherImgUrl = response.matches[i].imageUrlsBySize;
 
                 recipeArray.push(recipe);
 
@@ -145,6 +148,7 @@ $(document).on("tap", ".subDiv", function() {
             var source = response.source.sourceRecipeUrl;
 
 	    var recipeDetail = $("<div>");
+            recipeDetail.addClass("recipeDetail");
 
             recipeDetail.html(
               `<img src=${selectedRecipe.smallImgUrl}>
