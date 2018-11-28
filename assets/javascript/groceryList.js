@@ -56,7 +56,7 @@ function removeFromGroceryList(recipe) {
 
 //** Event listener for when an ingredient is tapped by user
 
-$(document).on("click", ".ingredient", crossOffList);
+$(document).on("tap", ".ingredient", crossOffList);
 
 // This function toggles whether or not an item in grocery list is crossed out or not.
 // Called when user taps individual item in list.

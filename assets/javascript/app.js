@@ -110,15 +110,6 @@ $(document).on("tap", ".select", function() {
         selected.css("background", "lightblue");
         selected.attr("data-selected", "true");
 
-        // =========================
-        // GET Recipe Ajax Query
-        // =========================
-
-        // Get Recipe URL Format: http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY
-
-        var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
-        var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
-
         addToGroceryList(selectedRecipe);
     }
 
@@ -126,7 +117,7 @@ $(document).on("tap", ".select", function() {
 
 //** Event for when user clicks on recipe to view DETAILS
 
-$(document).on("click", ".recipeDiv", function() {
+$(document).on("tap", ".recipeDiv", function() {
     console.log($(this).attr("class"));
     // Hide search window
     var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
@@ -134,6 +125,7 @@ $(document).on("click", ".recipeDiv", function() {
     var selectedRecipe = recipeArray[getArrayId];
     
         var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
+        
         
         $.ajax({
             url: getRecipeUrl,
@@ -164,7 +156,7 @@ $(document).on("click", ".recipeDiv", function() {
 // Google API Documentation: https://developers.google.com/custom-search/docs/overview
 // ============================================================================================================================
 
-$(document).on('click', '#add-item', function(event) {
+$(document).on('tap', '#add-item', function(event) {
     event.preventDefault();
 
     let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
@@ -208,7 +200,7 @@ window.fn.pushPage = function (page, anim) {
     }
 };
 
-$(document).on("click",".recipeDiv",function(){
+$(document).on("tap",".recipeDiv",function(){
     // window.location.href='tab2.html';
     fn.pushPage({'id': 'page.html', 'title': 'Ingredients'});
     
