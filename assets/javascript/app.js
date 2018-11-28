@@ -80,7 +80,7 @@ $(document).on("change", "#search", function () {
                 $("#recipeList").append(recipeDiv);
             }
         });
-});
+}); 
 
 //** Event for when user clicks on recipe to view DETAILS
 
