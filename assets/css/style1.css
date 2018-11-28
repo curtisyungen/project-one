@@ -1,0 +1,63 @@
+.ingredientList {
+  background: #f8f8f8;
+  border: 1px solid #cfcfcf;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 5px 0px 0px 0px;
+  padding: 10px;
+}
+
+.ingredient {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.recipeDiv {
+  border: 1px solid #555555;
+  font-size: 16px;
+  height: auto;
+  line-height: 20px;
+  margin: 0px 15px 5px 15px;
+  min-height: 60px;
+  padding: 3px;
+  text-align: left;  
+  width: auto;
+}
+
+.recipeDiv:hover {
+  background: lightgray;
+}
+
+.recipeDiv:active {
+  background: lightblue;
+  border: 1px solid blue;
+}
+
+img {
+  float: left;
+  margin-right: 3px;
+}
+
+span {
+  float: left;
+  max-width: 50%;
+}
+
+.select {
+  background: #lightgreen;
+  border: 1px solid #cfcfcf;
+  border-radius: 15%;
+  float: right;
+  font-size: 14px;
+  height: auto;
+  line-height: 14px;
+  margin: 0px;
+  margin-top: -1px;
+  padding: 23px 3px 23px 3px;
+}
+
+.select:active {
+  color: blue;
+}
