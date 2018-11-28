@@ -68,14 +68,24 @@ $(document).on("change", "#search", function () {
                 recipeArray.push(recipe);
 
                 var recipeDiv = $("<div>");
-
                 recipeDiv.addClass("recipeDiv");
-                recipeDiv.attr("data-arrayId", recipe.arrayId);
-                recipeDiv.html(
+
+                var subDiv = $("<div>");
+                subDiv.addClass("subDiv");
+                subDiv.attr("data-arrayId", recipe.arrayId);
+                subDiv.html(
                     `<img src=${recipe.smallImgUrl}> 
-                    <span>${recipe.name}</span> 
-                    <div class="select" data-arrayId=${recipe.arrayId}>Select</div>`
+                    <span>${recipe.name}</span>`
                 );
+
+                recipeDiv.append(subDiv);
+                var selectDiv = $("<div>");
+
+                selectDiv.addClass("select");
+                selectDiv.attr("data-arrayId", recipe.arrayId);
+                selectDiv.text("Select");
+
+                recipeDiv.append(selectDiv);
 
                 $("#recipeList").append(recipeDiv);
             }
@@ -117,7 +127,7 @@ $(document).on("tap", ".select", function () {
 
 //** Event for when user clicks on recipe to view DETAILS
 
-$(document).on("touch", ".recipeDiv", function() {
+$(document).on("tap", ".subDiv", function() {
 
     var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
     var getArrayId = $(this).attr("data-arrayId");
@@ -134,6 +144,20 @@ $(document).on("touch", ".recipeDiv", function() {
             // Get link to recipe source 
             var source = response.source.sourceRecipeUrl;
 
+	    var recipeDetail = $("<div>");
+
+            recipeDetail.html(
+              `<img src=${selectedRecipe.smallImgUrl}>
+               <br><br><br><br>
+               <h3>${selectedRecipe.name}</h3><br>
+               <h4>Rating: </h4>
+               ${selectedRecipe.rating}<br>
+               <h4>Ingredients: </h4>
+               ${selectedRecipe.ingredients}
+               <h4>Source: </h4>
+               ${source}`
+            );
+
             // Open the recipe source website in a new window
             var iFrame = `<div id="sourceWebsite">
                             <iframe src=${source} id="source"></iframe>
@@ -143,7 +167,7 @@ $(document).on("touch", ".recipeDiv", function() {
                 $(".display").attr("data-display", "none");
             }
 
-            $('#holder').append(iFrame);
+            $('#holder').append(recipeDetail);
 
         });
 });
@@ -200,9 +224,9 @@ window.fn.pushPage = function (page, anim) {
     }
 };
 
-$(document).on("touch", ".recipeDiv", function () {
+$(document).on("tap", ".subDiv", function () {
 
     // window.location.href='tab2.html';
-    fn.pushPage({ 'id': 'page.html', 'title': 'Ingredients' });
+    fn.pushPage({ 'id': 'page.html', 'title': 'Recipe Details' });
 
 });
