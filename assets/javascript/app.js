@@ -64,11 +64,11 @@ $(document).on("change", "#search", function () {
                 recipe.ingredients = response.matches[i].ingredients;
                 recipe.rating = response.matches[i].rating;
                 recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
-                
+
                 recipeArray.push(recipe);
 
                 var recipeDiv = $("<div>");
-                
+
                 recipeDiv.addClass("recipeDiv");
                 recipeDiv.attr("data-arrayId", recipe.arrayId);
                 recipeDiv.html(
@@ -85,7 +85,7 @@ $(document).on("change", "#search", function () {
 
 //** Event for when user clicks SELECT, indicating an intent to make this recipe
 
-$(document).on("tap", ".select", function() {
+$(document).on("tap", ".select", function () {
 
     var selected = $(this);
 
@@ -117,39 +117,35 @@ $(document).on("tap", ".select", function() {
 
 //** Event for when user clicks on recipe to view DETAILS
 
-$(document).on("tap", ".recipeDiv", function() {
-    
-    // Hide search window
+$(document).on("touch", ".recipeDiv", function() {
+
     var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
-    
-        var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
-        
-        
-        $.ajax({
-            url: getRecipeUrl,
-            method: "GET",
-        })
-            .then(function (response) {
-                
-                var source = response.source.sourceRecipeUrl;
-                console.log(source);
-                var iFrame = `<div id="sourceWebsite">
+
+    var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
+
+    $.ajax({
+        url: getRecipeUrl,
+        method: "GET",
+    })
+        .then(function(response) {
+
+            // Get link to recipe source 
+            var source = response.source.sourceRecipeUrl;
+
+            // Open the recipe source website in a new window
+            var iFrame = `<div id="sourceWebsite">
                             <iframe src=${source} id="source"></iframe>
-                        </div>`;
-                console.log($(".display").attr("data-display"));
-                if ($(".display").attr("data-display") == "visible") {
-                    $(".display").attr("data-display", "none");
-                }
-                $('#holder').append(iFrame);
-        
-            });
-        
-    // Open detail view of recipe
+                          </div>`;
 
+            if ($(".display").attr("data-display") == "visible") {
+                $(".display").attr("data-display", "none");
+            }
 
+            $('#holder').append(iFrame);
 
+        });
 });
 // ============================================================================================================================
 // Google Images API
@@ -164,17 +160,17 @@ $(document).on('tap', '#add-item', function(event) {
     let userInput = $("#food-input").val().trim();
 
     let queryURL = `${base_googleUrl}q=${userInput}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
-     
+
     $.ajax({
-      url: queryURL,
-      method: "GET", 
+        url: queryURL,
+        method: "GET",
     })
-      .then(function(response) {
-        let thumbnail = $('<img>');
-        thumbnail.attr('src', response.items[0].image.thumbnailLink);
-        $('#google-api-image').append(thumbnail);
-      });
-  });
+        .then(function (response) {
+            let thumbnail = $('<img>');
+            thumbnail.attr('src', response.items[0].image.thumbnailLink);
+            $('#google-api-image').append(thumbnail);
+        });
+});
 
 // ============================================================================================================================
 // Onsen UI    
@@ -185,23 +181,28 @@ document.addEventListener('prechange', function (event) {
         .innerHTML = event.tabItem.getAttribute('label');
 });
 
+// ============================================================================================================================
+// PushPage: View Recipe Details  
+// ============================================================================================================================
+
 window.fn = {};
 
 window.fn.pushPage = function (page, anim) {
     if (anim) {
-        // document.querySelector('#myNavigator').pushPage('page2.html', {data: {title: 'Page 2'}});
 
+        // document.querySelector('#myNavigator').pushPage('page2.html', {data: {title: 'Page 2'}});
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title }, animation: anim });
-    } else {
+    } 
+    else {
 
         // page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
-
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title } });
     }
 };
 
-$(document).on("touch",".recipeDiv",function(){
+$(document).on("touch", ".recipeDiv", function () {
+
     // window.location.href='tab2.html';
-    fn.pushPage({'id': 'page.html', 'title': 'Ingredients'});
-    
- });
+    fn.pushPage({ 'id': 'page.html', 'title': 'Ingredients' });
+
+});
