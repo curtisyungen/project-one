@@ -37,7 +37,7 @@ $(document).on("change", "#search", function () {
 
     // Search Recipe URL Format: http://api.yummly.com/v1/api/recipes?_app_id=1280f0ef&_app_key=c6dea6bf830227615c86bf87458ee3a8&q=onion
 
-    var base_searchRecipeUrl = "http://api.yummly.com/v1/api/recipes?_";
+    var base_searchRecipeUrl = "https://api.yummly.com/v1/api/recipes?_";
     var searchRecipeUrl = `${base_searchRecipeUrl}app_id=${APP_ID}&_app_key=${APP_KEY}&q=${searchTerm}`;
 
     $.ajax({
@@ -128,7 +128,7 @@ $(document).on("tap", ".select", function() {
 
         // Get Recipe URL Format: http://api.yummly.com/v1/api/recipe/recipe-id?_app_id=YOUR_ID&_app_key=YOUR_APP_KEY
 
-        var base_getRecipeUrl = "http://api.yummly.com/v1/api/recipe/";
+        var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
         var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
         $.ajax({
