@@ -28,7 +28,7 @@ $(document).on("change", "#search", function () {
     // Search Criteria
     // =========================
 
-    var searchLimit = 2;               // can be set by user
+    var searchLimit = 10;               // can be set by user
     var searchTerm = $(this).val();
 
     // =========================
@@ -64,13 +64,13 @@ $(document).on("change", "#search", function () {
                 recipe.ingredients = response.matches[i].ingredients;
                 recipe.rating = response.matches[i].rating;
                 recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
-
+                
                 recipeArray.push(recipe);
 
                 var recipeDiv = $("<div>");
-
+                
                 recipeDiv.addClass("recipeDiv");
-
+                recipeDiv.attr("data-arrayId", recipe.arrayId);
                 recipeDiv.html(
                     `<img src=${recipe.smallImgUrl}> 
                  <span>${recipe.name}</span> 
@@ -80,20 +80,8 @@ $(document).on("change", "#search", function () {
                 $("#recipeList").append(recipeDiv);
             }
         });
-}); 
-
-//** Event for when user clicks on recipe to view DETAILS
-
-$(document).on("click", ".recipeDiv", function() {
-
-    // Hide search window
-
-
-    // Open detail view of recipe
-
-
-
 });
+
 
 //** Event for when user clicks SELECT, indicating an intent to make this recipe
 
@@ -131,23 +119,50 @@ $(document).on("tap", ".select", function() {
         var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
         var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
-        $.ajax({
-            url: getRecipeUrl,
-            method: "GET",
-        })
-            .then(function (response) {
-                //console.log(response);
-
-                selectedRecipe.source = response.source.sourceRecipeUrl;
-                //getNutrition(response); for addition later
-
-            });
-
         addToGroceryList(selectedRecipe);
     }
 
 });
 
+//** Event for when user clicks on recipe to view DETAILS
+
+$(document).on("click", ".recipeDiv", function() {
+    console.log($(this).attr("class"));
+    // Hide search window
+    var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
+    var getArrayId = $(this).attr("data-arrayId");
+    var selectedRecipe = recipeArray[getArrayId];
+    
+        var getRecipeUrl = `${base_getRecipeUrl}${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
+        
+        if($(this).attr("class") == "select") {
+
+        }
+        else {
+        $.ajax({
+            url: getRecipeUrl,
+            method: "GET",
+        })
+            .then(function (response) {
+                
+                var source = response.source.sourceRecipeUrl;
+                console.log(source);
+                var iFrame = `<div id="sourceWebsite">
+                            <iframe src=${source} id="source"></iframe>
+                        </div>`;
+                console.log($(".display").attr("data-display"));
+                if ($(".display").attr("data-display") == "visible") {
+                    $(".display").attr("data-display", "none");
+                }
+                $('#holder').append(iFrame);
+        
+            });
+        }
+    // Open detail view of recipe
+
+
+
+});
 // ============================================================================================================================
 // Google Images API
 // Google API Documentation: https://developers.google.com/custom-search/docs/overview
@@ -173,8 +188,6 @@ $(document).on('click', '#add-item', function(event) {
       });
   });
 
-
-  
 // ============================================================================================================================
 // Onsen UI    
 // ============================================================================================================================
@@ -183,19 +196,24 @@ document.addEventListener('prechange', function (event) {
     document.querySelector('ons-toolbar .center')
         .innerHTML = event.tabItem.getAttribute('label');
 });
-=======
+
 window.fn = {};
+
 window.fn.pushPage = function (page, anim) {
     if (anim) {
         // document.querySelector('#myNavigator').pushPage('page2.html', {data: {title: 'Page 2'}});
+
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title }, animation: anim });
     } else {
+
         // page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
+
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title } });
     }
 };
+
 $(document).on("click",".recipeDiv",function(){
     // window.location.href='tab2.html';
-    fn.pushPage({'id': 'tab2.html', 'title': 'Ingredients'});
+    fn.pushPage({'id': 'page.html', 'title': 'Ingredients'});
     
  });
