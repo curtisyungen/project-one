@@ -73,8 +73,8 @@ $(document).on("change", "#search", function () {
                 recipeDiv.attr("data-arrayId", recipe.arrayId);
                 recipeDiv.html(
                     `<img src=${recipe.smallImgUrl}> 
-                 <span>${recipe.name}</span> 
-                 <div class="select" data-arrayId=${recipe.arrayId}>Select</div>`
+                    <span>${recipe.name}</span> 
+                    <div class="select" data-arrayId=${recipe.arrayId}>Select</div>`
                 );
 
                 $("#recipeList").append(recipeDiv);
@@ -118,7 +118,7 @@ $(document).on("tap", ".select", function() {
 //** Event for when user clicks on recipe to view DETAILS
 
 $(document).on("tap", ".recipeDiv", function() {
-    console.log($(this).attr("class"));
+    
     // Hide search window
     var base_getRecipeUrl = "https://api.yummly.com/v1/api/recipe/";
     var getArrayId = $(this).attr("data-arrayId");
@@ -200,7 +200,7 @@ window.fn.pushPage = function (page, anim) {
     }
 };
 
-$(document).on("tap",".recipeDiv",function(){
+$(document).on("touch",".recipeDiv",function(){
     // window.location.href='tab2.html';
     fn.pushPage({'id': 'page.html', 'title': 'Ingredients'});
     
