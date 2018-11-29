@@ -1,8 +1,10 @@
 // =========================
-// Global Variables
+// GLOBAL VARIABLES
 // =========================
 var APP_KEY = "c6dea6bf830227615c86bf87458ee3a8";
 var APP_ID = "1280f0ef";
+var recipeArray = [];
+var selectedArray;
 
 // ============================================================================================================================
 // Yummly APIs: Search Recipe API, Get Recipe API
@@ -10,27 +12,28 @@ var APP_ID = "1280f0ef";
 // ============================================================================================================================
 
 // =========================
-// Recipe Arrays
-// =========================
-
-var recipeArray = [];
-var selectedArray = [];
-
-// =========================
-// Local Storage Section
+// LOCAL STORAGE
 // =========================
 
 $(window).on("load", function() {
 
-    var list = JSON.parse(localStorage.getItem("test"));
+    selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
 
-    function generate(){
-        for(var i=0; i<list.length; i++){
-            addToGroceryList(list[i]);
+    if (selectedArray != null) {
+
+        function generate() {
+            for(var i=0; i<selectedArray.length; i++){
+                addToGroceryList(selectedArray[i]);
+            }
         }
+        
+        setTimeout(generate, 100);
     }
-    setTimeout(generate, 100);
 });
+
+// =========================
+// SEARCH RECIPE
+// =========================
 
 //** Event for when user searches for recipe
 
@@ -41,27 +44,23 @@ $(document).on("change", "#search", function () {
     $("#recipeList").empty();
     recipeArray = [];
 
-    // =========================
-    // Search Criteria
-    // =========================
+    // Get search criteria
 
-    var searchLimit = 10;               // can be set by user
+    var searchLimit = $("#numResults").val();
     var searchTerm = $(this).val();
 
-    // =========================
-    // SEARCH Recipe API Query
-    // =========================
+// ======== SEARCH RECIPE API QUERY ========
 
     // Search Recipe URL Format: http://api.yummly.com/v1/api/recipes?_app_id=1280f0ef&_app_key=c6dea6bf830227615c86bf87458ee3a8&q=onion
 
-    var searchRecipeUrl = `https://api.yummly.com/v1/api/recipes?_app_id=${APP_ID}&_app_key=${APP_KEY}&q=${searchTerm}`;
+    var searchRecipeUrl = `https://api.yummly.com/v1/api/recipes?_app_id=${APP_ID}&_app_key=${APP_KEY}&maxResult=${searchLimit}&q=${searchTerm}`;
 
     $.ajax({
         url: searchRecipeUrl,
         method: "GET"
     })
     .then(function (response) {
-        //console.log(response);
+        console.log(response);
 
         for (var i = 0; i < searchLimit; i++) {
 
@@ -81,7 +80,6 @@ $(document).on("change", "#search", function () {
             recipe.ingredients = response.matches[i].ingredients;
             recipe.rating = response.matches[i].rating;
             recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
-            recipe.otherImgUrl = response.matches[i].imageUrlsBySize;
 
             recipeArray.push(recipe);
 
@@ -109,6 +107,10 @@ $(document).on("change", "#search", function () {
         }
     });
 });
+
+// =========================
+// SELECT RECIPE
+// =========================
 
 //** Event for when user clicks SELECT, indicating an intent to make this recipe
 
@@ -138,19 +140,27 @@ $(document).on("tap", ".select", function () {
         selected.attr("data-selected", "true");
 
         addToGroceryList(selectedRecipe);
-        selectedArray.push(selectedRecipe);
 
-        localStorage.setItem("test", JSON.stringify(selectedArray));
+        if (selectedArray == null) {
+            selectedArray = [selectedRecipe];
+        }
+        else {
+            selectedArray.push(selectedRecipe);
+        }
+
+        localStorage.setItem("selectedArray", JSON.stringify(selectedArray));
     }
 });
 
 // =========================
-// View Recipe Details 
+// VIEW RECIPE DETAILS
 // =========================
 
-//** Event for when user clicks on recipe to view DETAILS
+//** Event for when user clicks on recipe in search results to view its DETAILS
 
 $(document).on("tap", ".subDiv", function () {
+
+// ======== GET RECIPE API QUERY ========
 
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
@@ -163,9 +173,9 @@ $(document).on("tap", ".subDiv", function () {
     })
     .then(function (response) {
 
-        console.log(response);
+        //console.log(response);
 
-        // ======== LARGE IMAGE ========
+        // ======== LARGER IMAGE ========
 
         var largeImg = $("<img>");
         largeImg.addClass("recipeDetailImg");
@@ -190,10 +200,10 @@ $(document).on("tap", ".subDiv", function () {
 
         var source = $("<div>");
         source.html(`<h4>Source:</h4> ${response.source.sourceRecipeUrl}`);
+        selectedRecipe.source = response.source.sourceRecipeUrl;
 
         // ======== NUTRITION INFO ========
 
-        // Get nutrition data from API response
         var nutritionInfo = response.nutritionEstimates;
 
         var nutritionContainerDiv = $("<div>");
@@ -232,7 +242,7 @@ $(document).on("tap", ".subDiv", function () {
             }
         }
 
-        // ======== RECIPE DETAIL WINDOW ========
+        // ======== CREATE RECIPE DETAIL WINDOW ========
         
         var recipeDetail = $("<div>");
         recipeDetail.addClass("recipeDetail");
@@ -248,6 +258,7 @@ $(document).on("tap", ".subDiv", function () {
 
     });
 });
+
 // ============================================================================================================================
 // Google Images API
 // Google API Documentation: https://developers.google.com/custom-search/docs/overview
@@ -256,21 +267,22 @@ $(document).on("tap", ".subDiv", function () {
 $(document).on('tap', '#add-item', function (event) {
     event.preventDefault();
 
+// ======== GOOGLE IMAGE (CLIPART) API QUERY ========
+
     let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
-    let base_googleUrl = "https://www.googleapis.com/customsearch/v1?";
     let userInput = $("#food-input").val().trim();
 
-    let queryURL = `${base_googleUrl}q=${userInput}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
+    let queryURL = `https://www.googleapis.com/customsearch/v1?q=${userInput}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
 
     $.ajax({
         url: queryURL,
         method: "GET",
     })
-        .then(function (response) {
-            let thumbnail = $('<img>');
-            thumbnail.attr('src', response.items[0].image.thumbnailLink);
-            $('#google-api-image').append(thumbnail);
-        });
+    .then(function (response) {
+        let thumbnail = $('<img>');
+        thumbnail.attr('src', response.items[0].image.thumbnailLink);
+        $('#google-api-image').append(thumbnail);
+    });
 });
 
 // ============================================================================================================================
@@ -301,7 +313,9 @@ window.fn.pushPage = function (page, anim) {
     }
 };
 
-$(document).on("tap", ".subDiv", function () {
+//** Event that opens recipe detail view when recipe is tapped
+
+$(document).on("tap", ".subDiv", function() {
 
     // window.location.href='tab2.html';
     fn.pushPage({ 'id': 'page.html', 'title': 'Recipe Details' });

@@ -10,6 +10,8 @@
 
 function addToGroceryList(recipe) {
 
+  //console.log(recipe);
+
   // Get list of ingredients from recipe object
   var ingredients = recipe.ingredients;
 
@@ -19,7 +21,7 @@ function addToGroceryList(recipe) {
   ingrList.attr("id", recipe.id);
 
   // Add recipe title to grocery list
-  ingrList.html(`<h4>${recipe.name}</h4><br>`);
+  ingrList.html(`<h4><a href=${recipe.source}>${recipe.name}</a></h4><br>`);
 
   // Create a div for each separate ingredient and add it to container div
   for (var i = 0; i < ingredients.length; i++) {
