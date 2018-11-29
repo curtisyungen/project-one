@@ -11,89 +11,130 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style1.css">
 
     <!-- jQuery -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script> -->
+
 
     <!-- Onsen UI CDN-->
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
 
-    <!-- Firebase Reference -->
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-
 </head>
 
 <body>
-     
-        <ons-navigator swipeable id="myNavigator" page="tab1.html">
-                <ons-page>
-                    <ons-toolbar>
-                        <div class="center">Recipes</div>
-                    </ons-toolbar>
-                    <ons-tabbar swipeable position="auto">
-                        <ons-tab page="tab1.html" label="Recipes" icon="fa-cutlery" active>
-                        </ons-tab>
-                        <ons-tab page="tab2.html" label="Ingredients" icon="fa-lemon" active-icon="fa-lemon">
-                        </ons-tab>
-                        <ons-tab page="tab3.html" label="Stored Recipes" icon="fa-database" active-icon="fa-database">
-                        </ons-tab>
-                    </ons-tabbar>
-                </ons-page>
-            </ons-navigator>
 
-        <template id="tab1.html">
-            <ons-page id="Tab1">
-                <p style="text-align: center; margin-top: 10px;">
-                    <input type="search" value="" id="search" placeholder="Search" class="search-input" style="width: 280px;">
-                    <select id="numResults">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </p>
-     
-                <div id="recipeList">
-     
-                </div>
-                <!-- <ons-card onclick="fn.pushPage({'id': 'tab2.html', 'title': 'PullHook'})">
+    <ons-navigator swipeable id="myNavigator" page="tab1.html">
+        <ons-page>
+            <ons-toolbar>
+                <div class="center">Recipes</div>
+            </ons-toolbar>
+            <ons-tabbar swipeable position="auto">
+                <ons-tab page="tab1.html" label="Recipes" icon="fa-cutlery" active>
+                </ons-tab>
+                <ons-tab page="tab2.html" label="Ingredients" icon="fa-lemon" active-icon="fa-lemon">
+                </ons-tab>
+                <ons-tab page="tab3.html" label="Support" icon="fa-donate" active-icon="fa-donate">
+                </ons-tab>
+            </ons-tabbar>
+        </ons-page>
+    </ons-navigator>
+
+    <template id="tab1.html">
+        <ons-page id="Tab1">
+            <p style="text-align: center; margin-top: 10px;">
+                <input type="search" value="" id="search" placeholder="Search" class="search-input" style="width: 280px;">
+                <select id="numResults">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </p>
+
+            <div id="recipeList">
+
+            </div>
+            <!-- <ons-card onclick="fn.pushPage({'id': 'tab2.html', 'title': 'PullHook'})">
                     <div class="title">Pull Hook</div>
                     <div class="content">Simple "pull to refresh" functionality to update data.</div>
                 </ons-card> -->
-            </ons-page>
-        </template>
-     
-        <template id="tab2.html">
-                <ons-page id="Tab2">
-                    <div id="groceryList"></div>
-                    <button id="clearGroceryList">Clear List</button>
-                </ons-page>
-            </template>
-     
-        <template id="tab3.html">
-            <ons-page id="Tab3">
-                <div id="ingredientsList">
-     
-                </div>
-            </ons-page>
-        </template>
 
-        <template id="page.html">
-                <ons-page id="page">
-                    <ons-toolbar>
-                        <div class="left">
-                            <ons-back-button>Back</ons-back-button>
-                        </div>
-                        <div class="center"></div>
-                    </ons-toolbar>
-                    <div id="holder">
-                        </div>
-                    
-                </ons-page>
-            </template>
-     
-        <script src="./assets/javascript/groceryList.js"></script>
-        <script src="./assets/javascript/app.js"></script>
-     </body>
+            </div>
+
+        </ons-page>
+    </template>
+
+    <template id="tab2.html">
+        <ons-page id="Tab2">
+            <div id="groceryList"></div>
+            <button id="clearGroceryList">Clear List</button>
+        </ons-page>
+    </template>
+
+    <template id="tab3.html">
+        <ons-page id="Tab3">
+            <div class="container">
+                <h5>Please help a hungry student that's going through Bootcamp</h5>
+                <ons-row class="height">
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col><img src="./assets/images/qrcode.png" alt="donation" id="code" width="300" height="300"></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                </ons-row>
+
+                <ons-row>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col>
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                            <input type="hidden" name="cmd" value="_s-xclick" class="donation" />
+                            <input type="hidden" name="hosted_button_id" value="P43EZYLZA854A" class="donation" />
+                            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+                                border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"
+                                class="donation" />
+                            <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                        </form>
+                    </ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                    <ons-col></ons-col>
+                </ons-row>
+
+
+            </div>
+        </ons-page>
+    </template>
+
+    <template id="page.html">
+        <ons-page id="page">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-back-button>Back</ons-back-button>
+                </div>
+                <div class="center"></div>
+            </ons-toolbar>
+            <div id="holder">
+            </div>
+
+        </ons-page>
+    </template>
+
+    <script src="./assets/javascript/groceryList.js"></script>
+    <script src="./assets/javascript/app.js"></script>
+</body>
 
 </html>

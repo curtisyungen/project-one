@@ -96,7 +96,7 @@ ons-card {
 }
 
 .makeThisRecipe {
-  background: #lightgreen;
+  background: lightgreen;
   border: 1px solid #cfcfcf;
   float: right;
   font-size: 14px;
@@ -129,3 +129,11 @@ button {
   margin-top: -1px;
   padding: 5px;
  }
+
+.height {
+  padding: 15% 0em 5%;
+}
+
+h5{
+  text-align: center;
+}
