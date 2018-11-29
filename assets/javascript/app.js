@@ -60,7 +60,7 @@ $(document).on("change", "#search", function () {
         method: "GET"
     })
     .then(function (response) {
-        console.log(response);
+        //console.log(response);
 
         for (var i = 0; i < searchLimit; i++) {
 
@@ -95,13 +95,6 @@ $(document).on("change", "#search", function () {
             );
 
             recipeDiv.append(subDiv);
-            var selectDiv = $("<div>");
-
-            selectDiv.addClass("select");
-            selectDiv.attr("data-arrayId", recipe.arrayId);
-            selectDiv.text("Select");
-
-            recipeDiv.append(selectDiv);
 
             $("#recipeList").append(recipeDiv);
         }
@@ -109,12 +102,12 @@ $(document).on("change", "#search", function () {
 });
 
 // =========================
-// SELECT RECIPE
+// MAKE THIS RECIPE
 // =========================
 
-//** Event for when user clicks SELECT, indicating an intent to make this recipe
+//** Event for when user clicks MAKE THIS RECIPE
 
-$(document).on("tap", ".select", function () {
+$(document).on("tap", ".makeThisRecipe", function() {
 
     var selected = $(this);
 
@@ -122,11 +115,12 @@ $(document).on("tap", ".select", function () {
 
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
+    //console.log(selectedRecipe);
 
     // Toggle whether or not a particular recipe is selected or not
 
     if (selected.attr("data-selected") == "true") {
-        selected.text("Select");
+        selected.text("Make This Recipe");
         selected.css("color", "black");
         selected.css("background", "none");
         selected.attr("data-selected", "false");
@@ -134,7 +128,7 @@ $(document).on("tap", ".select", function () {
         removeFromGroceryList(selectedRecipe);
     }
     else {
-        selected.text("Selected");
+        selected.text("Added to List");
         selected.css("color", "blue");
         selected.css("background", "lightblue");
         selected.attr("data-selected", "true");
@@ -174,6 +168,17 @@ $(document).on("tap", ".subDiv", function () {
     .then(function (response) {
 
         //console.log(response);
+
+        // ======== MAKE THIS RECIPE BUTTON ========
+
+        var makeThisRecipe = $("<div>");
+
+        makeThisRecipe.addClass("makeThisRecipe");
+        makeThisRecipe.text("Make This Recipe");
+        makeThisRecipe.attr("data-arrayId", getArrayId);
+        
+        selectedRecipe.ingredientLines = response.ingredientLines;
+        //console.log(selectedRecipe.ingredientLines);
 
         // ======== LARGER IMAGE ========
 
@@ -247,6 +252,7 @@ $(document).on("tap", ".subDiv", function () {
         var recipeDetail = $("<div>");
         recipeDetail.addClass("recipeDetail");
 
+        recipeDetail.append(makeThisRecipe);
         recipeDetail.append(largeImg);
         recipeDetail.append(recipeName);
         recipeDetail.append(rating);
