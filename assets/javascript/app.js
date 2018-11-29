@@ -260,32 +260,6 @@ $(document).on("tap", ".subDiv", function () {
 });
 
 // ============================================================================================================================
-// Google Images API
-// Google API Documentation: https://developers.google.com/custom-search/docs/overview
-// ============================================================================================================================
-
-$(document).on('tap', '#add-item', function (event) {
-    event.preventDefault();
-
-// ======== GOOGLE IMAGE (CLIPART) API QUERY ========
-
-    let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
-    let userInput = $("#food-input").val().trim();
-
-    let queryURL = `https://www.googleapis.com/customsearch/v1?q=${userInput}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
-
-    $.ajax({
-        url: queryURL,
-        method: "GET",
-    })
-    .then(function (response) {
-        let thumbnail = $('<img>');
-        thumbnail.attr('src', response.items[0].image.thumbnailLink);
-        $('#google-api-image').append(thumbnail);
-    });
-});
-
-// ============================================================================================================================
 // Onsen UI    
 // ============================================================================================================================
 
