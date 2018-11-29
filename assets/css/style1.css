@@ -95,25 +95,19 @@ ons-card {
   font-size: 20px;
 }
 
-.select {
+.makeThisRecipe {
   background: #lightgreen;
   border: 1px solid #cfcfcf;
-  border-radius: 15%;
   float: right;
   font-size: 14px;
   height: auto;
   line-height: 14px;
-  margin: 0px;
-  margin-top: -1px;
-  padding: 23px 3px 23px 3px;
+  margin: 5px;
+  padding: 5px;
 }
 
-.select:active {
+.makeThisRecipe:active {
   color: blue;
-}
-
-#clearGroceryList {
-  margin-top: 10px;
 }
 
 #source {
@@ -125,14 +119,13 @@ ons-card {
   border: 0;
 }
 
-#viewAsImages {
+button {
   border: 1px solid #cfcfcf;
-  border-radius: 15%;
   float: right;
-  font-size: 13px;
+  font-size: 12px;
   height: auto;
   line-height: 12px;
-  margin: 0px;
+  margin: 5px;
   margin-top: -1px;
-  padding: 20px 3px 20px 3px;
+  padding: 5px;
  }

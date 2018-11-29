@@ -12,8 +12,9 @@ function addToGroceryList(recipe) {
 
   //console.log(recipe);
 
-  // Get list of ingredients from recipe object
+  // Get list of ingredients and ingredientLines from recipe object
   var ingredients = recipe.ingredients;
+  var ingredientLines = recipe.ingredientLines;
 
   // Create container div for ingredients. Give it same id as recipe
   var ingrList = $("<div>");
@@ -21,14 +22,14 @@ function addToGroceryList(recipe) {
   ingrList.attr("id", recipe.id);
 
   // Add recipe title to grocery list
-  ingrList.html(`<h4><a href=${recipe.source}>${recipe.name}</a></h4><br>`);
+  ingrList.html(`<h4>${recipe.name}</h4><br>`);
 
   // Create a div for each separate ingredient and add it to container div
   for (var i = 0; i < ingredients.length; i++) {
 
     var ingr = $("<div>");
 
-    ingr.text(ingredients[i]);
+    ingr.html(`${ingredientLines[i]}`);
     ingr.addClass("ingredient");
     ingr.attr("data-crossed", "false");
 
@@ -49,7 +50,7 @@ function addToGroceryList(recipe) {
 }
 
 // ===============================
-// REMOVE items from Grocery List
+// REMOVE Recipe from Grocery List
 // ===============================
 
 // This function is called when user chooses to deselect recipe from search results page
@@ -90,10 +91,14 @@ function crossOffList() {
   }
 }
 
+// ===============================
+// CLEAR Grocery List
+// ===============================
+
 $(document).on("click", "#clearGroceryList", function(event) {
   event.preventDefault();
 
-  $("#groceryList").remove();
+  $("#groceryList").empty();
   localStorage.removeItem("selectedArray");
 });
 
