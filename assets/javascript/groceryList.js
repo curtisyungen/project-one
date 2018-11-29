@@ -38,6 +38,14 @@ function addToGroceryList(recipe) {
 
   // Append container div to grocery list
   $("#groceryList").append(ingrList);
+
+  // Add 'view ingredients as images' button
+  var button = $("<button>");
+
+  button.text("View as Images");
+  button.attr("id", "viewAsImages");
+
+  $("#groceryList").append(button);
 }
 
 // ===============================
@@ -81,3 +89,44 @@ function crossOffList() {
     ingredient.attr("data-crossed", "false");
   }
 }
+
+$(document).on("click", "#clearGroceryList", function(event) {
+  event.preventDefault();
+
+  $("#groceryList").remove();
+  localStorage.removeItem("selectedArray");
+});
+
+// ============================================================================================================================
+// Google Images API
+// Google API Documentation: https://developers.google.com/custom-search/docs/overview
+// ============================================================================================================================
+
+$(document).on('tap', '#viewAsImages', function(event) {
+  event.preventDefault();
+
+  let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
+  let base_googleUrl = "https://www.googleapis.com/customsearch/v1?";
+  
+  for (let i = 3; i < $(this).parent()[0].childNodes.length; i++) {
+    let queryURL = `${base_googleUrl}q=${ingredToImg}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
+    var ingredToImg = $(this).parent()[0].childNodes[i].innerHTML;
+       
+    $.ajax({
+        url: queryURL,
+        method: "GET",
+    })
+    .then(function (response) {
+      let thumbnail = $('<img>');
+      thumbnail.attr('src', response.items[0].image.thumbnailLink);
+      $('h4').prepend(thumbnail);
+      // ingredToImg = thumbnail;
+    });
+              
+    // var something = $(this).parent()[0].childNodes[3].innerHTML;
+    // let thumbnail = $('<img>');
+    // thumbnail.attr('src', response.items[0].image.thumbnailLink);
+    // $('#google-api-image').append(thumbnail);
+  }
+
+});

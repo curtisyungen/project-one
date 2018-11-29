@@ -79,6 +79,22 @@ span {
   max-width: 50%;
 }
 
+.intro {
+  text-align: center;
+  padding: 0 20px;
+  margin-top: 40px;
+}
+
+ons-card {
+  cursor: pointer;
+  color: #333;
+}
+
+.card__title,
+.card--material__title {
+  font-size: 20px;
+}
+
 .select {
   background: #lightgreen;
   border: 1px solid #cfcfcf;
@@ -96,6 +112,10 @@ span {
   color: blue;
 }
 
+#clearGroceryList {
+  margin-top: 10px;
+}
+
 #source {
   position: absolute;
   top: 0;
@@ -104,3 +124,15 @@ span {
   height: 100%;
   border: 0;
 }
+
+#viewAsImages {
+  border: 1px solid #cfcfcf;
+  border-radius: 15%;
+  float: right;
+  font-size: 13px;
+  height: auto;
+  line-height: 12px;
+  margin: 0px;
+  margin-top: -1px;
+  padding: 20px 3px 20px 3px;
+ }
