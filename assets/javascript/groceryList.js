@@ -46,8 +46,16 @@ function addToGroceryList(recipe) {
     button.attr("data-localStorageId", recipe.localStorageId);
     //console.log(button);
 
+    // Create View Details button
+
+    var detailsButton = $("<button>");
+    detailsButton.text("View Details");
+    detailsButton.addClass("viewDetails");
+    detailsButton.attr("id", recipe.id);
+
     ingrList.append(button);
 
+    onsListItem.append(detailsButton);
     onsListItem.append(ingrList);
     
     // Append container div to grocery list
@@ -136,7 +144,7 @@ const hideAll = () => {
 // View RECIPE DETAILS from Grocery List
 // ======================================
 
-$(document).on("tap", ".ingredientList", callGetRecipeDetails); // need a button
+$(document).on("tap", ".viewDetails", callGetRecipeDetails); 
 
 function callGetRecipeDetails() {
 
