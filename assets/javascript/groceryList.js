@@ -10,7 +10,7 @@
 
 function addToGroceryList(recipe) {
 
-  //console.log(recipe);
+  console.log(recipe);
 
   // Get list of ingredients and ingredientLines from recipe object
   var ingredients = recipe.ingredients;
@@ -135,3 +135,21 @@ $(document).on('tap', '#viewAsImages', function(event) {
   }
 
 });
+
+$(document).on("tap", ".ingredientList", callFunction);
+
+function callFunction() {
+
+  selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
+  var localStorageId;
+
+  for (var i=0; i<selectedArray.length; i++) {
+    if ($(this).attr("id") == selectedArray[i].id) {
+      localStorageId = i;
+    }
+  }
+
+  var selectedRecipe = selectedArray[localStorageId];
+
+  getRecipeDetail(localStorageId, selectedRecipe);
+}
