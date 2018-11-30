@@ -255,6 +255,7 @@ $(document).on("tap", ".makeThisRecipe", function() {
 
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
+    
     //console.log(selectedRecipe);
 
     // Toggle whether or not a particular recipe is selected or not
@@ -273,8 +274,6 @@ $(document).on("tap", ".makeThisRecipe", function() {
         selected.css("background", "lightblue");
         selected.attr("data-text", "added");
 
-        addToGroceryList(selectedRecipe);
-
         if (selectedArray == null) {
             selectedRecipe.localStorageId = 0;
             selectedArray = [selectedRecipe];
@@ -284,8 +283,46 @@ $(document).on("tap", ".makeThisRecipe", function() {
             selectedArray.push(selectedRecipe);
         }
 
+        addToGroceryList(selectedRecipe);
+
         localStorage.setItem("selectedArray", JSON.stringify(selectedArray));
     }
+    
+});
+
+// ============================================================================================================================
+// Google Images API
+// Google API Documentation: https://developers.google.com/custom-search/docs/overview
+// ============================================================================================================================
+
+$(document).on('tap', '#viewAsImages', function(event) {
+    event.preventDefault();
+  
+    let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
+
+    // Get the button's attribute called 'Local Storage Id'
+    // Local Storage has an array that contains saved recipes. This Id is the index of this particular recipe in that array.
+
+    // Pull the array from local storage
+
+    // Find the specific recipe using that Local Storage Id and pull its ingredients
+    var ingrList = ["apple", "pear"];
+
+    for (let i=0; i<ingrList.length; i++) {
+
+        let queryURL = `https://www.googleapis.com/customsearch/v1?q=${ingrList[i]}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
+        
+        $.ajax({
+            url: queryURL,
+            method: "GET",
+        })
+        .then(function (response) {
+            let thumbnail = $('<img>');
+            thumbnail.attr('src', response.items[0].image.thumbnailLink);
+            $('#groceryList').append(thumbnail);
+        });
+    }
+
 });
 
 // ============================================================================================================================

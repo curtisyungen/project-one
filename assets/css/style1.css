@@ -1,24 +1,4 @@
-.ingredientList {
-  background: #f8f8f8;
-  border: 1px solid #cfcfcf;
-  border-left: 0px;
-  border-right: 0px;
-  font-size: 16px;
-  font-weight: 700;
-  margin: 5px 0px 0px 0px;
-  padding: 10px;
-}
-
-.ingredient {
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.intro {
-  text-align: center;
-  padding: 0 20px;
-  margin-top: 40px;
-}
+/* index.html */
 
 ons-card {
   cursor: pointer;
@@ -30,22 +10,35 @@ ons-card {
   font-size: 20px;
 }
 
-.nutritionDiv {
-  background: white;
-  border: 1px solid black;
-  font-size: 12px;
-  padding: 2px;
+
+.height {
+  padding: 15% 0em 5%;
 }
 
-.recipeDetail {
-  padding: 20px;
-  text-align: left;
+.intro {
+  text-align: center;
+  padding: 0 20px;
+  margin-top: 40px;
 }
 
-.recipeDetailImg {
-   clear: both;
-   margin-left: auto;
-   margin-right: auto;
+#numResults {
+  height: 28px;
+}
+
+#Tab2 {
+  text-align: center;
+}
+
+#Tab3 {
+  text-align: center;
+
+}
+
+/* Recipe Search Results */
+
+img {
+  float: left;
+  margin-right: 3px;
 }
 
 .recipeDiv {
@@ -69,30 +62,17 @@ ons-card {
   border: 1px solid blue;
 }
 
-img {
-  float: left;
-  margin-right: 3px;
-}
+/* Recipe Detail View */
 
-span {
-  float: left;
-  max-width: 50%;
-}
-
-.intro {
-  text-align: center;
-  padding: 0 20px;
-  margin-top: 40px;
-}
-
-ons-card {
-  cursor: pointer;
-  color: #333;
-}
-
-.card__title,
-.card--material__title {
-  font-size: 20px;
+button {
+  border: 1px solid #cfcfcf;
+  float: right;
+  font-size: 12px;
+  height: auto;
+  line-height: 12px;
+  margin: 5px;
+  margin-top: -1px;
+  padding: 5px;
 }
 
 .makeThisRecipe {
@@ -109,6 +89,24 @@ ons-card {
   color: blue;
 }
 
+.nutritionDiv {
+  background: white;
+  border: 1px solid black;
+  font-size: 12px;
+  padding: 2px;
+}
+
+.recipeDetail {
+  padding: 20px;
+  text-align: left;
+}
+
+.recipeDetailImg {
+   clear: both;
+   margin-left: auto;
+   margin-right: auto;
+}
+
 #source {
   position: absolute;
   top: 0;
@@ -118,30 +116,63 @@ ons-card {
   border: 0;
 }
 
-button {
-  border: 1px solid #cfcfcf;
-  float: right;
-  font-size: 12px;
-  height: auto;
-  line-height: 12px;
-  margin: 5px;
-  margin-top: -1px;
-  padding: 5px;
- }
+/* Grocery List */
 
-.height {
-  padding: 15% 0em 5%;
+span {
+  float: left;
+  max-width: 75%;
 }
 
-h5{
-  margin-top: 20px;
-  text-align: center;
+.center {
+  padding-left: 10px;
+}
+
+.expandable-content {
+  border-top: 2px rgb(8, 109, 224) dashed;
+  padding-left: 10px;
+}
+
+.ingredientList {
+  background: #f8f8f8;
+  border: 1px solid #cfcfcf;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 5px 0px 0px 0px;
+  padding: 10px;
+}
+
+.ingredient {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  margin-left: 15px;
+  padding: 10px;
+}
+
+.list-item {
+  padding: 0px;
+}
+
+.list-item--expandable {
+  background-image: none;
+}
+
+#clearGroceryList {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+}
+
+/* Support Page */
+
+#plea {
+  margin-top: 35px;
+  padding: 20px;
 }
 
 #qrCode {
   border: 1px solid black;
-}
-
-#Tab3 {
-  text-align: center;
+  margin-bottom: 25px;
 }
