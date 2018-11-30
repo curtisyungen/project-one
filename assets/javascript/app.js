@@ -297,17 +297,20 @@ $(document).on("tap", ".makeThisRecipe", function() {
 
 $(document).on('tap', '#viewAsImages', function(event) {
     event.preventDefault();
+
+    // use to target the ingredients' divs (for appending thumbnail to them (30 lines below this))
+    let viewAsImgBtnParent = $(this).parent();
   
     let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
 
     // Get the button's attribute called 'Local Storage Id'
+    let localStorageIndex = $(this).attr("data-localStorageId");
     // Local Storage has an array that contains saved recipes. This Id is the index of this particular recipe in that array.
-
-    // Pull the array from local storage
-
+    selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
     // Find the specific recipe using that Local Storage Id and pull its ingredients
-    var ingrList = ["apple", "pear"];
+    let ingrList = selectedArray[localStorageIndex].ingredients;
 
+    // Make the call to the google API for each ingredient
     for (let i=0; i<ingrList.length; i++) {
 
         let queryURL = `https://www.googleapis.com/customsearch/v1?q=${ingrList[i]}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
@@ -319,10 +322,37 @@ $(document).on('tap', '#viewAsImages', function(event) {
         .then(function (response) {
             let thumbnail = $('<img>');
             thumbnail.attr('src', response.items[0].image.thumbnailLink);
+            thumbnail.attr('class', 'clipart');
+            thumbnail.attr('data-x', 'false');
+
+            thumbnail.css('height', '90px');
+            thumbnail.css('width', '85px');
+            thumbnail.css('margin', '10px');
+
+            // viewAsImgBtnParent[0].childNodes[i].innerHTML = thumbnail;
+
+            hideAll();
             $('#groceryList').append(thumbnail);
         });
     }
+});
 
+// Toggles whether or not a clipart image in grocery list is crossed out or not.
+// Called when user taps individual image in list.
+
+$(document).on('tap', '.clipart', function(event) {
+    let clipImg = $(this);
+
+    if (clipImg.attr('data-x') == 'false') {
+        // clipImg.css("color", "lightgray");
+        clipImg.css('opacity', '0.07');
+        clipImg.attr("data-x", "true");
+    } 
+    
+    else {
+        clipImg.css('opacity', '1.0');
+        clipImg.attr('data-x', 'false');
+    }
 });
 
 // ============================================================================================================================

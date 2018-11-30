@@ -125,6 +125,7 @@ $(document).on("tap", "#clearGroceryList", function (event) {
 
   $("#groceryList").empty();
   localStorage.removeItem("selectedArray");
+  $(".clipart").detach();
 });
 
 // ======================================
