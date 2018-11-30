@@ -38,6 +38,22 @@ function addToGroceryList(recipe) {
       ingrList.append(ingr);
     }
 
+    var imagesBtn = createImagesBtn(recipe);
+
+    ingrList.append(imagesBtn);
+
+    var detailsBtn = createDetailsBtn(recipe);
+
+    ingrList.append(detailsBtn);
+    onsListItem.append(ingrList);
+    
+    // Append container div to grocery list
+    $("#groceryList").append(onsListItem);
+  }
+}
+
+function createImagesBtn(recipe) {
+
     // Create View as Images button
 
     var button = $("<button>");
@@ -46,6 +62,11 @@ function addToGroceryList(recipe) {
     button.attr("data-localStorageId", recipe.localStorageId);
     //console.log(button);
 
+    return button;
+}
+
+function createDetailsBtn(recipe) {
+
     // Create View Details button
 
     var detailsButton = $("<button>");
@@ -53,14 +74,7 @@ function addToGroceryList(recipe) {
     detailsButton.addClass("viewDetails");
     detailsButton.attr("id", recipe.id);
 
-    ingrList.append(button);
-
-    onsListItem.append(detailsButton);
-    onsListItem.append(ingrList);
-    
-    // Append container div to grocery list
-    $("#groceryList").append(onsListItem);
-  }
+    return detailsButton;
 }
 
 // ===============================

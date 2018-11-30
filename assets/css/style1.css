@@ -107,6 +107,11 @@ button {
    margin-right: auto;
 }
 
+.recipeDetail h4 {
+  clear: both;
+  margin-top: 10px;
+}
+
 #source {
   position: absolute;
   top: 0;
@@ -163,6 +168,14 @@ span {
   margin-left: auto;
   margin-right: auto;
   margin-top: 25px;
+}
+
+#viewAsImages {
+  clear: both;
+}
+
+#viewDetails {
+  clear: both;
 }
 
 /* Support Page */
