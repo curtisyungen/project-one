@@ -102,57 +102,12 @@ $(document).on("change", "#search", function () {
 });
 
 // =========================
-// MAKE THIS RECIPE
-// =========================
-
-//** Event for when user clicks MAKE THIS RECIPE
-
-$(document).on("tap", ".makeThisRecipe", function() {
-
-    var selected = $(this);
-
-    // Get the ingredients from the selected recipe
-
-    var getArrayId = $(this).attr("data-arrayId");
-    var selectedRecipe = recipeArray[getArrayId];
-    //console.log(selectedRecipe);
-
-    // Toggle whether or not a particular recipe is selected or not
-
-    if (selected.attr("data-selected") == "true") {
-        selected.text("Make This Recipe");
-        selected.css("color", "black");
-        selected.css("background", "none");
-        selected.attr("data-selected", "false");
-
-        removeFromGroceryList(selectedRecipe);
-    }
-    else {
-        selected.text("Added to List");
-        selected.css("color", "blue");
-        selected.css("background", "lightblue");
-        selected.attr("data-selected", "true");
-
-        addToGroceryList(selectedRecipe);
-
-        if (selectedArray == null) {
-            selectedArray = [selectedRecipe];
-        }
-        else {
-            selectedArray.push(selectedRecipe);
-        }
-
-        localStorage.setItem("selectedArray", JSON.stringify(selectedArray));
-    }
-});
-
-// =========================
 // VIEW RECIPE DETAILS
 // =========================
 
 //** Event for when user clicks on recipe in search results to view its DETAILS
 
-$(document).on("tap", ".subDiv", function () {
+$(document).on("tap", ".subDiv", function() {
 
 // ======== GET RECIPE API QUERY ========
 
@@ -171,14 +126,28 @@ $(document).on("tap", ".subDiv", function () {
 
         // ======== MAKE THIS RECIPE BUTTON ========
 
-        var makeThisRecipe = $("<div>");
+        // When recipe is opened, check if it is already in the ingredients list
+        selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
 
-        makeThisRecipe.addClass("makeThisRecipe");
-        makeThisRecipe.text("Make This Recipe");
-        makeThisRecipe.attr("data-arrayId", getArrayId);
+        var makeThisRecipe = $("<div>");
+        var buttonText;
         
-        selectedRecipe.ingredientLines = response.ingredientLines;
-        //console.log(selectedRecipe.ingredientLines);
+        makeThisRecipe.addClass("makeThisRecipe");
+        makeThisRecipe.attr("data-arrayId", getArrayId);
+
+        buttonText = "Make this Recipe";
+        makeThisRecipe.attr("data-text", "make");
+
+        if (selectedArray != null) {
+            for (var i=0; i<selectedArray.length; i++) {
+                if (selectedRecipe.id == selectedArray[i].id) {
+                    buttonText = "Added to List";
+                    makeThisRecipe.attr("data-text", "added");
+                }
+            }
+        }
+
+        makeThisRecipe.text(buttonText);
 
         // ======== LARGER IMAGE ========
 
@@ -200,6 +169,7 @@ $(document).on("tap", ".subDiv", function () {
 
         var ingredients = $("<div>");
         ingredients.html(`<h4>Ingredients:</h4><br>${selectedRecipe.ingredients}`);
+        selectedRecipe.ingredientLines = response.ingredientLines;
 
         // ======== SOURCE INFO ========
 
@@ -263,6 +233,51 @@ $(document).on("tap", ".subDiv", function () {
         $('#holder').append(recipeDetail);
 
     });
+});
+
+// =========================
+// MAKE THIS RECIPE
+// =========================
+
+//** Event for when user clicks MAKE THIS RECIPE
+
+$(document).on("tap", ".makeThisRecipe", function() {
+
+    var selected = $(this);
+
+    // Get the ingredients from the selected recipe
+
+    var getArrayId = $(this).attr("data-arrayId");
+    var selectedRecipe = recipeArray[getArrayId];
+    //console.log(selectedRecipe);
+
+    // Toggle whether or not a particular recipe is selected or not
+
+    if (selected.attr("data-text") == "added") {
+        selected.text("Make This Recipe");
+        selected.css("color", "black");
+        selected.css("background", "none");
+        selected.attr("data-text", "make");
+
+        removeFromGroceryList(selectedRecipe);
+    }
+    else {
+        selected.text("Added to List");
+        selected.css("color", "blue");
+        selected.css("background", "lightblue");
+        selected.attr("data-text", "added");
+
+        addToGroceryList(selectedRecipe);
+
+        if (selectedArray == null) {
+            selectedArray = [selectedRecipe];
+        }
+        else {
+            selectedArray.push(selectedRecipe);
+        }
+
+        localStorage.setItem("selectedArray", JSON.stringify(selectedArray));
+    }
 });
 
 // ============================================================================================================================
