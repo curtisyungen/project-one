@@ -12,7 +12,7 @@ ons-card {
 
 
 .height {
-  padding: 15% 0em 5%;
+  padding: 2% 0em;
 }
 
 .intro {
@@ -128,7 +128,7 @@ span {
 }
 
 .expandable-content {
-  border-top: 2px rgb(8, 109, 224) dashed;
+  border-top: 2px #086DE0 dashed;
   padding-left: 10px;
 }
 
@@ -168,11 +168,12 @@ span {
 /* Support Page */
 
 #plea {
-  margin-top: 35px;
   padding: 20px;
+  margin: 0;
 }
 
 #qrCode {
   border: 1px solid black;
   margin-bottom: 25px;
 }
+
