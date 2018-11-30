@@ -7,19 +7,18 @@
     <meta charset="UTF-8">
     <title>Project One</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/css/style1.css">
-
     <!-- jQuery -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script> -->
-
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script> -->
 
     <!-- Onsen UI CDN-->
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
     <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style1.css">
 
 </head>
 
@@ -53,37 +52,37 @@
                 </select>
             </p>
 
-            <div id="recipeList">
-
-            </div>
-            <!-- <ons-card onclick="fn.pushPage({'id': 'tab2.html', 'title': 'PullHook'})">
-                    <div class="title">Pull Hook</div>
-                    <div class="content">Simple "pull to refresh" functionality to update data.</div>
-                </ons-card> -->
-
-            </div>
-
+            <div id="recipeList"></div>
         </ons-page>
     </template>
 
     <template id="tab2.html">
         <ons-page id="Tab2">
             <div id="groceryList"></div>
-            <button id="clearGroceryList">Clear List</button>
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="hideAll()">
+                        Hide all
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-button id="clearGroceryList">Clear List</ons-button>
         </ons-page>
     </template>
 
     <template id="tab3.html">
         <ons-page id="Tab3">
             <div class="container">
-                <h5>Please help a hungry student that's going through Bootcamp</h5>
+                <h5 id="plea">Our secret recipe is your donations! Please help feed a hungry Bootcamp student.</h5>
                 <ons-row class="height">
                     <ons-col></ons-col>
                     <ons-col></ons-col>
                     <ons-col></ons-col>
                     <ons-col></ons-col>
                     <ons-col></ons-col>
-                    <ons-col><img src="./assets/images/qrcode.png" alt="donation" id="code" width="300" height="300"></ons-col>
+
+                    <ons-col><img src="./assets/images/qrcode.png" alt="donation" id="qrCode" width="300" height="300"></ons-col>
+
                     <ons-col></ons-col>
                     <ons-col></ons-col>
                     <ons-col></ons-col>
@@ -102,9 +101,9 @@
                             <input type="hidden" name="cmd" value="_s-xclick" class="donation" />
                             <input type="hidden" name="hosted_button_id" value="P43EZYLZA854A" class="donation" />
                             <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-                                border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"
+                                name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button"
                                 class="donation" />
-                            <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+                            <img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
                         </form>
                     </ons-col>
                     <ons-col></ons-col>
