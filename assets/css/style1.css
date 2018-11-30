@@ -96,7 +96,6 @@ ons-card {
 }
 
 .makeThisRecipe {
-  background: lightgreen;
   border: 1px solid #cfcfcf;
   float: right;
   font-size: 14px;
@@ -135,5 +134,14 @@ button {
 }
 
 h5{
+  margin-top: 20px;
+  text-align: center;
+}
+
+#qrCode {
+  border: 1px solid black;
+}
+
+#Tab3 {
   text-align: center;
 }

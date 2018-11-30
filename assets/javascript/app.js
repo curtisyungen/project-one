@@ -108,11 +108,18 @@ $(document).on("change", "#search", function () {
 //** Event for when user clicks on recipe in search results to view its DETAILS
 
 $(document).on("tap", ".subDiv", function() {
-
-// ======== GET RECIPE API QUERY ========
-
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
+
+    getRecipeDetail(getArrayId, selectedRecipe);
+    
+});
+
+function getRecipeDetail(getArrayId, selectedRecipe) {
+
+    fn.pushPage({ 'id': 'page.html', 'title': 'Recipe Details' });
+
+// ======== GET RECIPE API QUERY ========
 
     var getRecipeUrl = `https://api.yummly.com/v1/api/recipe/${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
@@ -231,9 +238,8 @@ $(document).on("tap", ".subDiv", function() {
         recipeDetail.append(nutritionContainerDiv);
 
         $('#holder').append(recipeDetail);
-
     });
-});
+}
 
 // =========================
 // MAKE THIS RECIPE
@@ -270,9 +276,11 @@ $(document).on("tap", ".makeThisRecipe", function() {
         addToGroceryList(selectedRecipe);
 
         if (selectedArray == null) {
+            selectedRecipe.localStorageId = 0;
             selectedArray = [selectedRecipe];
         }
         else {
+            selectedRecipe.localStorageId = selectedArray.length;
             selectedArray.push(selectedRecipe);
         }
 
@@ -307,12 +315,3 @@ window.fn.pushPage = function (page, anim) {
         document.getElementById('myNavigator').pushPage(page.id, { data: { title: page.title } });
     }
 };
-
-//** Event that opens recipe detail view when recipe is tapped
-
-$(document).on("tap", ".subDiv", function() {
-
-    // window.location.href='tab2.html';
-    fn.pushPage({ 'id': 'page.html', 'title': 'Recipe Details' });
-
-});
