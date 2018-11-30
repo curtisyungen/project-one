@@ -10,43 +10,46 @@
 
 function addToGroceryList(recipe) {
 
-  console.log(recipe);
+  if (recipe != "") {
 
-  // Get list of ingredients and ingredientLines from recipe object
-  var ingredients = recipe.ingredients;
-  var ingredientLines = recipe.ingredientLines;
+    //console.log(recipe);
 
-  // Create container div for ingredients. Give it same id as recipe
-  var ingrList = $("<div>");
-  ingrList.addClass("ingredientList");
-  ingrList.attr("id", recipe.id);
+    // Get list of ingredients and ingredientLines from recipe object
+    var ingredients = recipe.ingredients;
+    var ingredientLines = recipe.ingredientLines;
 
-  // Add recipe title to grocery list
-  ingrList.html(`<h4>${recipe.name}</h4><br>`);
+    // Create container div for ingredients. Give it same id as recipe
+    var ingrList = $("<div>");
+    ingrList.addClass("ingredientList");
+    ingrList.attr("id", recipe.id);
 
-  // Create a div for each separate ingredient and add it to container div
-  for (var i = 0; i < ingredients.length; i++) {
+    // Add recipe title to grocery list
+    ingrList.html(`<h4>${recipe.name}</h4><br>`);
 
-    var ingr = $("<div>");
+    // Create a div for each separate ingredient and add it to container div
+    for (var i = 0; i < ingredients.length; i++) {
 
-    ingr.html(`${ingredientLines[i]}`);
-    ingr.addClass("ingredient");
-    ingr.attr("data-crossed", "false");
+      var ingr = $("<div>");
 
-    ingrList.append(ingr);
+      ingr.html(`${ingredientLines[i]}`);
+      ingr.addClass("ingredient");
+      ingr.attr("data-crossed", "false");
 
+      ingrList.append(ingr);
+
+    }
+
+    // Append container div to grocery list
+    $("#groceryList").append(ingrList);
+
+    // Add 'view ingredients as images' button
+    var button = $("<button>");
+
+    button.text("View as Images");
+    button.attr("id", "viewAsImages");
+
+    $("#groceryList").append(button);
   }
-
-  // Append container div to grocery list
-  $("#groceryList").append(ingrList);
-
-  // Add 'view ingredients as images' button
-  var button = $("<button>");
-
-  button.text("View as Images");
-  button.attr("id", "viewAsImages");
-
-  $("#groceryList").append(button);
 }
 
 // ===============================
@@ -56,6 +59,18 @@ function addToGroceryList(recipe) {
 // This function is called when user chooses to deselect recipe from search results page
 
 function removeFromGroceryList(recipe) {
+
+  console.log(recipe);
+
+  var selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
+
+  for (var i=0; i<selectedArray.length; i++) {
+    if (selectedArray[i].id == recipe.id) {
+      selectedArray[i] = "";
+    }
+  }
+
+  localStorage.setItem("selectedArray", JSON.stringify(selectedArray));
 
   $(`#${recipe.id}`).remove();
 
