@@ -15,7 +15,7 @@ function addToGroceryList(recipe) {
   if (recipe != "") {
 
     // Create expandable box
-    var onsListItem = $("<ons-list-item expandable style='border-bottom: 2px rgb(8, 109, 224) dashed;color: rgb(8, 109, 224);'>");
+    var onsListItem = $("<ons-list-item expandable style='border-bottom: 2px #086DE0 dashed;color: #086DE0;'>");
     onsListItem.html(`<h4>${recipe.name}</h4><br>`);
     onsListItem.attr("id", recipe.id);
 
@@ -110,7 +110,7 @@ function crossOffList() {
 
   // If ingredient already crossed off, uncross it
   else {
-    ingredient.css("color", "black");
+    ingredient.css("color", "#086DE0");
     ingredient.css("text-decoration", "none");
     ingredient.attr("data-crossed", "false");
   }
