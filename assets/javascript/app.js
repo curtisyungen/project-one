@@ -85,16 +85,11 @@ $(document).on("change", "#search", function () {
 
                 var recipeDiv = $("<div>");
                 recipeDiv.addClass("recipeDiv");
-
-                var subDiv = $("<div>");
-                subDiv.addClass("subDiv");
-                subDiv.attr("data-arrayId", recipe.arrayId);
-                subDiv.html(
+                recipeDiv.attr("data-arrayId", recipe.arrayId);
+                recipeDiv.html(
                     `<img src=${recipe.smallImgUrl}> 
-                <span>${recipe.name}</span>`
+                    <span>${recipe.name}</span>`
                 );
-
-                recipeDiv.append(subDiv);
 
                 $("#recipeList").append(recipeDiv);
             }
@@ -107,7 +102,7 @@ $(document).on("change", "#search", function () {
 
 //** Event for when user clicks on recipe in search results to view its DETAILS
 
-$(document).on("tap", ".subDiv", function () {
+$(document).on("tap", ".recipeDiv", function () {
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
 
@@ -129,7 +124,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
     })
         .then(function (response) {
 
-            console.log(response);
+            //console.log(response);
 
             // ======== MAKE THIS RECIPE BUTTON ========
 
@@ -187,7 +182,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
 
             selectedRecipe.servings = response.numberOfServings;
             var servings = $("<div class='detail'>");
-            servings.html(`<h4 class='title'>Servings:</h4> ${selectedRecipe.servings}`);
+            servings.html(`<h4 class='title'>Servings</h4> ${selectedRecipe.servings}`);
 
             // ======== INGREDIENTS ========
 
@@ -204,8 +199,15 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
 
             // ======== SOURCE INFO ========
 
-            var source = $("<div class='detail source'>");
-            source.html(`<a href=${response.source.sourceRecipeUrl}>Link to Recipe Source</a>`);
+            var sourceDiv = $("<div id='sourceDiv'>");
+
+            var source = $("<a class='source'>");
+            
+            source.addClass("detail source");
+            source.attr("href", `${response.source.sourceRecipeUrl}`);
+            source.text("Link to Recipe Source");
+            sourceDiv.append(source);
+
             selectedRecipe.source = response.source.sourceRecipeUrl;
 
             // ======== NUTRITION INFO ========
@@ -247,6 +249,9 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
                     }
                 }
             }
+            var perServing = $("<div id='perServing'>");
+            perServing.text("Values shown are per serving");
+            nutritionContainerDiv.append(perServing);
 
             // ======== CREATE RECIPE DETAIL WINDOW ========
 
@@ -254,7 +259,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
             recipeDetail.addClass("recipeDetail");
 
             recipeDetail.append(recipeName);
-            recipeDetail.append(source);
+            recipeDetail.append(sourceDiv);
             recipeDetail.append(largeImg);
             recipeDetail.append(rating);
             recipeDetail.append(makeThisRecipe);
@@ -339,7 +344,7 @@ $(document).on('tap', '#changeDisplayType', function (event) {
 
     if ($(this).attr("data-displayType") == "text") {
         key = "images";
-        getClipArt(recipe);
+        getClipArt(recipe, recipeDiv);
     }
     else {
         key = "text";
@@ -362,13 +367,12 @@ $(document).on('tap', '#changeDisplayType', function (event) {
 
 // This function displays the ingredients in image format
 
-function getClipArt(recipe) {
+function getClipArt(recipe, recipeDiv) {
 
     let ingrList = recipe.ingredients;
 
     let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
 
-    // Make the call to the google API for each ingredient
     for (let i = 0; i < ingrList.length; i++) {
 
         let queryURL = `https://www.googleapis.com/customsearch/v1?q=${ingrList[i]}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
@@ -378,6 +382,7 @@ function getClipArt(recipe) {
             method: "GET",
         })
             .then(function (response) {
+                
                 let thumbnail = $('<img>');
                 thumbnail.attr('src', response.items[0].image.thumbnailLink);
                 thumbnail.attr('class', 'clipart');
