@@ -61,9 +61,13 @@ img {
   margin-right: 3px;
 }
 
+.recipeDiv span {
+  max-width: 60%;
+}
+
 .recipeDiv {
   border: 1px solid #555555;
-  font-size: 16px;
+  font-size: 14px;
   height: auto;
   line-height: 20px;
   margin: 0px 15px 5px 15px;
