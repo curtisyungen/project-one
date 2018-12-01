@@ -1,4 +1,6 @@
+/**************/
 /* index.html */
+/**************/
 
 ons-card {
   cursor: pointer;
@@ -34,7 +36,9 @@ ons-card {
 
 }
 
+/*************************/
 /* Recipe Search Results */
+/*************************/
 
 img {
   float: left;
@@ -62,18 +66,23 @@ img {
   border: 1px solid blue;
 }
 
+/**********************/
 /* Recipe Detail View */
+/**********************/
 
-button {
-  border: 1px solid #cfcfcf;
-  float: right;
-  font-size: 12px;
-  height: auto;
-  line-height: 12px;
-  margin: 5px;
-  margin-top: -1px;
+.checked {
+  color: gold;
+}
+
+.detail {
+  clear: both;
   padding: 5px;
 }
+
+.fa fa-star {
+  margin: 0px 3px 0px 3px;
+  padding: 5px;
+ }
 
 .makeThisRecipe {
   border: 1px solid #cfcfcf;
@@ -90,26 +99,30 @@ button {
 }
 
 .nutritionDiv {
-  background: white;
-  border: 1px solid black;
-  font-size: 12px;
-  padding: 2px;
+  font-size: 16px;
 }
 
 .recipeDetail {
+  overflow-y: scroll;
   padding: 20px;
   text-align: left;
 }
 
 .recipeDetailImg {
-   clear: both;
-   margin-left: auto;
-   margin-right: auto;
+  border: 1px solid #666666;
+  clear: both;
+  margin: 5px auto 5px auto;
 }
 
 .recipeDetail h4 {
   clear: both;
+  font-size: 24px;
+  font-weight: 700;
   margin-top: 10px;
+}
+
+#detailTitle {
+  text-align: center;
 }
 
 #source {
@@ -121,7 +134,20 @@ button {
   border: 0;
 }
 
+/****************/
 /* Grocery List */
+/****************/
+
+button {
+  border: 1px solid #cfcfcf;
+  float: left;
+  font-size: 14px;
+  height: auto;
+  line-height: 12px;
+  margin: 5px;
+  margin-top: 10px;
+  padding: 5px;
+}
 
 span {
   float: left;
@@ -130,6 +156,11 @@ span {
 
 .center {
   padding-left: 10px;
+}
+
+.deleteBtn {
+  color: rgb(179, 0, 0);
+  float: right;
 }
 
 .expandable-content {
@@ -170,7 +201,7 @@ span {
   margin-top: 25px;
 }
 
-#viewAsImages {
+#changeDisplayType {
   clear: both;
 }
 
@@ -178,11 +209,14 @@ span {
   clear: both;
 }
 
+/****************/
 /* Support Page */
+/****************/
 
 #plea {
-  padding: 20px;
+  font-size: 24px;
   margin: 0;
+  padding: 20px;
 }
 
 #qrCode {

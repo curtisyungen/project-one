@@ -15,18 +15,18 @@ var selectedArray;
 // LOCAL STORAGE
 // =========================
 
-$(window).on("load", function() {
+$(window).on("load", function () {
 
     selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
 
     if (selectedArray != null) {
 
         function generate() {
-            for(var i=0; i<selectedArray.length; i++){
+            for (var i = 0; i < selectedArray.length; i++) {
                 addToGroceryList(selectedArray[i]);
             }
         }
-        
+
         setTimeout(generate, 100);
     }
 });
@@ -49,7 +49,7 @@ $(document).on("change", "#search", function () {
     var searchLimit = $("#numResults").val();
     var searchTerm = $(this).val();
 
-// ======== SEARCH RECIPE API QUERY ========
+    // ======== SEARCH RECIPE API QUERY ========
 
     // Search Recipe URL Format: http://api.yummly.com/v1/api/recipes?_app_id=1280f0ef&_app_key=c6dea6bf830227615c86bf87458ee3a8&q=onion
 
@@ -59,46 +59,46 @@ $(document).on("change", "#search", function () {
         url: searchRecipeUrl,
         method: "GET"
     })
-    .then(function (response) {
-        //console.log(response);
+        .then(function (response) {
+            //console.log(response);
 
-        for (var i = 0; i < searchLimit; i++) {
+            for (var i = 0; i < searchLimit; i++) {
 
-            var recipe = {
-                name: "",
-                id: "",
-                arrayId: "",
-                ingredients: [],
-                rating: "",
-                smallImgUrl: "",
-                source: "",
-            }
+                var recipe = {
+                    name: "",
+                    id: "",
+                    arrayId: "",
+                    ingredients: [],
+                    rating: "",
+                    smallImgUrl: "",
+                    source: "",
+                }
 
-            recipe.name = response.matches[i].recipeName;
-            recipe.id = response.matches[i].id;
-            recipe.arrayId = i;
-            recipe.ingredients = response.matches[i].ingredients;
-            recipe.rating = response.matches[i].rating;
-            recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
+                recipe.name = response.matches[i].recipeName;
+                recipe.id = response.matches[i].id;
+                recipe.arrayId = i;
+                recipe.ingredients = response.matches[i].ingredients;
+                recipe.rating = response.matches[i].rating;
+                recipe.smallImgUrl = response.matches[i].smallImageUrls[0];
 
-            recipeArray.push(recipe);
+                recipeArray.push(recipe);
 
-            var recipeDiv = $("<div>");
-            recipeDiv.addClass("recipeDiv");
+                var recipeDiv = $("<div>");
+                recipeDiv.addClass("recipeDiv");
 
-            var subDiv = $("<div>");
-            subDiv.addClass("subDiv");
-            subDiv.attr("data-arrayId", recipe.arrayId);
-            subDiv.html(
-                `<img src=${recipe.smallImgUrl}> 
+                var subDiv = $("<div>");
+                subDiv.addClass("subDiv");
+                subDiv.attr("data-arrayId", recipe.arrayId);
+                subDiv.html(
+                    `<img src=${recipe.smallImgUrl}> 
                 <span>${recipe.name}</span>`
-            );
+                );
 
-            recipeDiv.append(subDiv);
+                recipeDiv.append(subDiv);
 
-            $("#recipeList").append(recipeDiv);
-        }
-    });
+                $("#recipeList").append(recipeDiv);
+            }
+        });
 });
 
 // =========================
@@ -107,19 +107,19 @@ $(document).on("change", "#search", function () {
 
 //** Event for when user clicks on recipe in search results to view its DETAILS
 
-$(document).on("tap", ".subDiv", function() {
+$(document).on("tap", ".subDiv", function () {
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
 
     getRecipeDetail(getArrayId, selectedRecipe);
-    
+
 });
 
 function getRecipeDetail(getArrayId, selectedRecipe) {
 
     fn.pushPage({ 'id': 'page.html', 'title': 'Recipe Details' });
 
-// ======== GET RECIPE API QUERY ========
+    // ======== GET RECIPE API QUERY ========
 
     var getRecipeUrl = `https://api.yummly.com/v1/api/recipe/${selectedRecipe.id}?_app_id=${APP_ID}&_app_key=${APP_KEY}`;
 
@@ -127,118 +127,127 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
         url: getRecipeUrl,
         method: "GET",
     })
-    .then(function (response) {
+        .then(function (response) {
 
-        //console.log(response);
+            console.log(response);
 
-        // ======== MAKE THIS RECIPE BUTTON ========
+            // ======== MAKE THIS RECIPE BUTTON ========
 
-        // When recipe is opened, check if it is already in the ingredients list
-        selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
+            // When recipe is opened, check if it is already in the ingredients list
+            selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
 
-        var makeThisRecipe = $("<div>");
-        var buttonText;
-        
-        makeThisRecipe.addClass("makeThisRecipe");
-        makeThisRecipe.attr("data-arrayId", getArrayId);
+            var makeThisRecipe = $("<div>");
+            var buttonText;
 
-        buttonText = "Make this Recipe";
-        makeThisRecipe.attr("data-text", "make");
+            makeThisRecipe.addClass("makeThisRecipe");
+            makeThisRecipe.attr("data-arrayId", getArrayId);
 
-        if (selectedArray != null) {
-            for (var i=0; i<selectedArray.length; i++) {
-                if (selectedRecipe.id == selectedArray[i].id) {
-                    buttonText = "Added to List";
-                    makeThisRecipe.attr("data-text", "added");
+            buttonText = "Make this Recipe";
+            makeThisRecipe.attr("data-text", "make");
+
+            if (selectedArray != null) {
+                for (var i = 0; i < selectedArray.length; i++) {
+                    if (selectedRecipe.id == selectedArray[i].id) {
+                        buttonText = "Added to List";
+                        makeThisRecipe.attr("data-text", "added");
+                    }
                 }
             }
-        }
 
-        makeThisRecipe.text(buttonText);
+            makeThisRecipe.text(buttonText);
 
-        // ======== LARGER IMAGE ========
+            // ======== LARGER IMAGE ========
 
-        var largeImg = $("<img>");
-        largeImg.addClass("recipeDetailImg");
-        largeImg.attr("src", response.images[0].hostedLargeUrl);
+            var largeImg = $("<img>");
+            largeImg.addClass("recipeDetailImg");
+            largeImg.attr("src", response.images[0].hostedLargeUrl);
 
-        // ======== RECIPE NAME ========
+            // ======== RECIPE NAME ========
 
-        var recipeName = $("<div>");
-        recipeName.html(`<h4>${selectedRecipe.name}</h4>`);
+            var recipeName = $("<div class='detail' id='detailTitle'>");
+            recipeName.html(`<h4>${selectedRecipe.name}</h4>`);
 
-        // ======== RATING ========
+            // ======== RATING ========
 
-        var rating = $("<div>");
-        rating.html(`<h4>Rating:</h4> ${selectedRecipe.rating}`);
+            var rating = $("<div class='detail'>");
 
-        // ======== INGREDIENTS ========
+            for (var i=0; i<5; i++) {
+                var star = $("<span class='fa fa-star'>");
 
-        var ingredients = $("<div>");
-        ingredients.html(`<h4>Ingredients:</h4><br>${selectedRecipe.ingredients}`);
-        selectedRecipe.ingredientLines = response.ingredientLines;
+                if (i < selectedRecipe.rating) {
+                    star.addClass("checked");
+                }
 
-        // ======== SOURCE INFO ========
+                rating.append(star);
+            }
 
-        var source = $("<div>");
-        source.html(`<h4>Source:</h4> ${response.source.sourceRecipeUrl}`);
-        selectedRecipe.source = response.source.sourceRecipeUrl;
+            // ======== INGREDIENTS ========
 
-        // ======== NUTRITION INFO ========
+            var ingredients = $("<div class='detail'>");
+            ingredients.html(`<h4>Ingredients:</h4><br>${selectedRecipe.ingredients}`);
+            selectedRecipe.ingredientLines = response.ingredientLines;
 
-        var nutritionInfo = response.nutritionEstimates;
+            // ======== SOURCE INFO ========
 
-        var nutritionContainerDiv = $("<div>");
-        nutritionContainerDiv.addClass("nutritionDiv");
+            var source = $("<div class='detail'>");
+            source.html(`<h4>Source:</h4> ${response.source.sourceRecipeUrl}`);
+            selectedRecipe.source = response.source.sourceRecipeUrl;
 
-        // Search Terms found in API result (attributes)
-        var nutrientArray = ["FAT_KCAL", "SUGAR", "FIBTG", "CHOCDF",
-            "VITC", "CA", "PROCNT", "FE"];
+            // ======== NUTRITION INFO ========
 
-        // Labels corresponding to Search Terms
-        var labelArray = ["Fat", "Sugar", "Fiber", "Carbs",
-            "Vitamin C", "Calcium", "Protein", "Iron"];
+            var nutritionInfo = response.nutritionEstimates;
 
-        nutritionContainerDiv.html("<h4>Nutrition Info: </h4>");
+            var nutritionContainerDiv = $("<div class='detail'>");
+            nutritionContainerDiv.addClass("nutritionDiv");
 
-        // Loop through all elements in nutrition info (usually 50+ of them)
-        for (var i = 0; i < nutritionInfo.length; i++) {
-            var label = response.nutritionEstimates[i].attribute;
+            // Search Terms found in API result (attributes)
+            var nutrientArray = ["FAT_KCAL", "SUGAR", "FIBTG", "CHOCDF",
+                "VITC", "CA", "PROCNT", "FE"];
 
-            // Look for element attribute names that match with the labels we're looking for (shown in nutrientArray)
-            for (var j = 0; j < nutrientArray.length; j++) {
+            // Labels corresponding to Search Terms
+            var labelArray = ["Fat", "Sugar", "Fiber", "Carbs",
+                "Vitamin C", "Calcium", "Protein", "Iron"];
 
-                // If match found, compile and append to nutrition list
-                if (label == nutrientArray[j]) {
+            nutritionContainerDiv.html("<h4>Nutrition Info: </h4>");
 
-                    var nutr = $("<div>");
+            // Loop through all elements in nutrition info (usually 50+ of them)
+            for (var i = 0; i < nutritionInfo.length; i++) {
+                var label = response.nutritionEstimates[i].attribute;
 
-                    var newLabel = labelArray[j];
-                    var nutrVal = response.nutritionEstimates[i].value;
-                    var nutrUnit = response.nutritionEstimates[i].unit.plural;
+                // Look for element attribute names that match with the labels we're looking for (shown in nutrientArray)
+                for (var j = 0; j < nutrientArray.length; j++) {
 
-                    nutr.text(`${newLabel}: ${nutrVal} ${nutrUnit}`);
+                    // If match found, compile and append to nutrition list
+                    if (label == nutrientArray[j]) {
 
-                    nutritionContainerDiv.append(nutr);
+                        var nutr = $("<div>");
+
+                        var newLabel = labelArray[j];
+                        var nutrVal = response.nutritionEstimates[i].value;
+                        var nutrUnit = response.nutritionEstimates[i].unit.plural;
+
+                        nutr.text(`${newLabel}: ${nutrVal} ${nutrUnit}`);
+
+                        nutritionContainerDiv.append(nutr);
+                    }
                 }
             }
-        }
 
-        // ======== CREATE RECIPE DETAIL WINDOW ========
-        
-        var recipeDetail = $("<div>");
-        recipeDetail.addClass("recipeDetail");
+            // ======== CREATE RECIPE DETAIL WINDOW ========
 
-        recipeDetail.append(makeThisRecipe);
-        recipeDetail.append(largeImg);
-        recipeDetail.append(recipeName);
-        recipeDetail.append(rating);
-        recipeDetail.append(ingredients);
-        recipeDetail.append(source);
-        recipeDetail.append(nutritionContainerDiv);
+            var recipeDetail = $("<div>");
+            recipeDetail.addClass("recipeDetail");
 
-        $('#holder').append(recipeDetail);
-    });
+            recipeDetail.append(recipeName);
+            recipeDetail.append(largeImg);
+            recipeDetail.append(rating);
+            recipeDetail.append(makeThisRecipe);
+            recipeDetail.append(ingredients);
+            recipeDetail.append(source);
+            recipeDetail.append(nutritionContainerDiv);
+
+            $('#holder').append(recipeDetail);
+        });
 }
 
 // =========================
@@ -247,7 +256,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
 
 //** Event for when user clicks MAKE THIS RECIPE
 
-$(document).on("tap", ".makeThisRecipe", function() {
+$(document).on("tap", ".makeThisRecipe", function () {
 
     var selected = $(this);
 
@@ -255,7 +264,7 @@ $(document).on("tap", ".makeThisRecipe", function() {
 
     var getArrayId = $(this).attr("data-arrayId");
     var selectedRecipe = recipeArray[getArrayId];
-    
+
     //console.log(selectedRecipe);
 
     // Toggle whether or not a particular recipe is selected or not
@@ -287,7 +296,7 @@ $(document).on("tap", ".makeThisRecipe", function() {
 
         localStorage.setItem("selectedArray", JSON.stringify(selectedArray));
     }
-    
+
 });
 
 // ============================================================================================================================
@@ -295,70 +304,108 @@ $(document).on("tap", ".makeThisRecipe", function() {
 // Google API Documentation: https://developers.google.com/custom-search/docs/overview
 // ============================================================================================================================
 
-$(document).on('tap', '#viewAsImages', function(event) {
+$(document).on('tap', '#changeDisplayType', function (event) {
+
     event.preventDefault();
 
-    // use to target the ingredients' divs (for appending thumbnail to them (30 lines below this))
-    let viewAsImgBtnParent = $(this).parent();
-  
+    // Used to target the ingredients' parent div (for appending thumbnail to them)
+    let recipeDiv = $(this).parent();
+
+    let localStorageId = $(this).attr("data-localStorageId");
+    selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
+
+    let recipe = selectedArray[localStorageId];
+
+    recipeDiv.empty();
+
+    // Key will be used to toggle between "View as Images" and "View as Text"
+    var key;
+
+    if ($(this).attr("data-displayType") == "text") {
+        key = "images";
+        // getClipArt(recipe);
+    }
+    else {
+        key = "text";
+        getText(recipe, recipeDiv);
+    }
+
+    // Create buttons
+
+    var imagesBtn = createImagesBtn(recipe, key);
+    var detailsBtn = createDetailsBtn(recipe);
+    var deleteBtn = createDeleteBtn(recipe);
+
+    recipeDiv.append(imagesBtn);
+    recipeDiv.append(detailsBtn);
+    recipeDiv.append(deleteBtn);
+
+    //console.log(recipeDiv);
+
+});
+
+// This function displays the ingredients in image format
+
+function getClipArt(recipe) {
+
+    let ingrList = recipe.ingredients;
+
     let API_KEY = "AIzaSyDJ90SaiND0l5GJlYS-rAnWNcWFZIoDNL8";
 
-    // Get the button's attribute called 'Local Storage Id'
-    let localStorageIndex = $(this).attr("data-localStorageId");
-    // Local Storage has an array that contains saved recipes. This Id is the index of this particular recipe in that array.
-    selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
-    // Find the specific recipe using that Local Storage Id and pull its ingredients
-    let ingrList = selectedArray[localStorageIndex].ingredients;
-
-    var recipe = selectedArray[localStorageIndex];
-
-    viewAsImgBtnParent.empty()
-
     // Make the call to the google API for each ingredient
-    for (let i=0; i<ingrList.length; i++) {
+    for (let i = 0; i < ingrList.length; i++) {
 
         let queryURL = `https://www.googleapis.com/customsearch/v1?q=${ingrList[i]}&cx=003819080641655921957%3A-osseiuyk9e&imgType=clipart&num=1&searchType=image&key=${API_KEY}`;
-        
+
         $.ajax({
             url: queryURL,
             method: "GET",
         })
-        .then(function (response) {
-            let thumbnail = $('<img>');
-            thumbnail.attr('src', response.items[0].image.thumbnailLink);
-            thumbnail.attr('class', 'clipart');
-            thumbnail.attr('data-x', 'false');
+            .then(function (response) {
+                let thumbnail = $('<img>');
+                thumbnail.attr('src', response.items[0].image.thumbnailLink);
+                thumbnail.attr('class', 'clipart');
+                thumbnail.attr('data-x', 'false');
 
-            thumbnail.css('height', '90px');
-            thumbnail.css('width', '85px');
-            thumbnail.css('margin', '10px');
+                thumbnail.css('height', '90px');
+                thumbnail.css('width', '85px');
+                thumbnail.css('margin', '10px');
 
-            // viewAsImgBtnParent[0].childNodes[i].innerHTML = thumbnail;
+                recipeDiv.prepend(thumbnail);
+            });
+    }
+}
 
-            
-	    viewAsImgBtnParent.prepend(thumbnail);
-        });
+// This function displays the ingredients in text format
+
+function getText(recipe, recipeDiv) {
+    var ingrList = recipe.ingredientLines;
+
+    for (var i=recipe.ingredients.length; i >= 0; i--) {
+
+        var ingr = $("<h5 style='text-align:left;'>");
+        ingr.html(ingrList[i]);
+
+        ingr.addClass("ingredient");
+        ingr.attr("data-crossed", "false");
+
+        recipeDiv.prepend(ingr);
     }
 
-    var imagesBtn = createImagesBtn(recipe);
-    var detailsBtn = createDetailsBtn(recipe);
-
-    viewAsImgBtnParent.append(imagesBtn);
-    viewAsImgBtnParent.append(detailsBtn);
-});
+}
 
 // Toggles whether or not a clipart image in grocery list is crossed out or not.
 // Called when user taps individual image in list.
 
-$(document).on('tap', '.clipart', function(event) {
+$(document).on('tap', '.clipart', function () {
     let clipImg = $(this);
 
     if (clipImg.attr('data-x') == 'false') {
         // clipImg.css("color", "lightgray");
         clipImg.css('opacity', '0.07');
         clipImg.attr("data-x", "true");
-    } 
-    
+    }
+
     else {
         clipImg.css('opacity', '1.0');
         clipImg.attr('data-x', 'false');

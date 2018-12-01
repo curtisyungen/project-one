@@ -38,36 +38,52 @@ function addToGroceryList(recipe) {
       ingrList.append(ingr);
     }
 
-    var imagesBtn = createImagesBtn(recipe);
+    // Create button to toggle between Image display and Text display
+    var displayTypeBtn = createImagesBtn(recipe, "text");
+    ingrList.append(displayTypeBtn);
 
-    ingrList.append(imagesBtn);
-
+    // Create button to view Recipe Details
     var detailsBtn = createDetailsBtn(recipe);
-
     ingrList.append(detailsBtn);
+
+    // Create delete button
+    var deleteBtn = createDeleteBtn(recipe);
+    ingrList.append(deleteBtn);
+
     onsListItem.append(ingrList);
-    
-    // Append container div to grocery list
     $("#groceryList").append(onsListItem);
   }
 }
 
-function createImagesBtn(recipe) {
+// Creates button for toggling between Text and Image display for ingredient list
+
+function createImagesBtn(recipe, key) {
 
     // Create View as Images button
 
-    var button = $("<button>");
-    button.text("View as Images");
-    button.attr("id", "viewAsImages");
-    button.attr("data-localStorageId", recipe.localStorageId);
+    var displayBtn = $("<button>");
+    var buttonText;
+
+    if (key == "text") {
+      buttonText = "View as Images";
+      displayBtn.attr("data-displayType", "text");
+    }
+    else {
+      buttonText = "View as Text";
+      displayBtn.attr("data-displayType", "images");
+    }
+
+    displayBtn.text(buttonText);
+    displayBtn.attr("id", "changeDisplayType");
+    displayBtn.attr("data-localStorageId", recipe.localStorageId);
     //console.log(button);
 
-    return button;
+    return displayBtn;
 }
 
-function createDetailsBtn(recipe) {
+// Creates button for accessing Recipe Detail View from Grocery List
 
-    // Create View Details button
+function createDetailsBtn(recipe) {
 
     var detailsButton = $("<button>");
     detailsButton.text("View Details");
@@ -77,15 +93,27 @@ function createDetailsBtn(recipe) {
     return detailsButton;
 }
 
+// Creates button for deleting individual recipe from Grocery List
+
+function createDeleteBtn(recipe) {
+
+  var deleteButton = $("<button>");
+  deleteButton.text("Delete");
+  deleteButton.addClass("deleteBtn");
+  deleteButton.attr("id", recipe.id);
+
+  return deleteButton;
+}
+
 // ===============================
 // REMOVE Recipe from Grocery List
 // ===============================
 
-// This function is called when user chooses to deselect recipe from search results page
+// This function is called when user chooses to deselct recipe using button in Recipe Detail View
 
 function removeFromGroceryList(recipe) {
 
-  console.log(recipe);
+  //console.log(recipe);
 
   var selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
 
@@ -138,8 +166,9 @@ $(document).on("tap", "#clearGroceryList", function (event) {
   event.preventDefault();
 
   $("#groceryList").empty();
-  localStorage.removeItem("selectedArray");
   $(".clipart").detach();
+
+  localStorage.removeItem("selectedArray");
 });
 
 // ======================================
@@ -176,3 +205,26 @@ function callGetRecipeDetails() {
 
   getRecipeDetail(localStorageId, selectedRecipe);
 }
+
+// =========================================
+// DELETE Individual Entry from Grocery List
+// =========================================
+
+$(document).on("tap", ".deleteBtn", function(event) {
+  event.preventDefault();
+
+  selectedArray = JSON.parse(localStorage.getItem("selectedArray"));
+  var localStorageId;
+
+  for (var i = 0; i < selectedArray.length; i++) {
+    if ($(this).attr("id") == selectedArray[i].id) {
+      localStorageId = i;
+    }
+  }
+
+  var deleteRecipe = selectedArray[localStorageId];
+
+  removeFromGroceryList(deleteRecipe);
+  
+});
+
