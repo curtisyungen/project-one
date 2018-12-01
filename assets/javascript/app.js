@@ -310,6 +310,10 @@ $(document).on('tap', '#viewAsImages', function(event) {
     // Find the specific recipe using that Local Storage Id and pull its ingredients
     let ingrList = selectedArray[localStorageIndex].ingredients;
 
+    var recipe = selectedArray[localStorageIndex];
+
+    viewAsImgBtnParent.empty()
+
     // Make the call to the google API for each ingredient
     for (let i=0; i<ingrList.length; i++) {
 
@@ -331,10 +335,16 @@ $(document).on('tap', '#viewAsImages', function(event) {
 
             // viewAsImgBtnParent[0].childNodes[i].innerHTML = thumbnail;
 
-            hideAll();
-            $('#groceryList').append(thumbnail);
+            
+	    viewAsImgBtnParent.prepend(thumbnail);
         });
     }
+
+    var imagesBtn = createImagesBtn(recipe);
+    var detailsBtn = createDetailsBtn(recipe);
+
+    viewAsImgBtnParent.append(imagesBtn);
+    viewAsImgBtnParent.append(detailsBtn);
 });
 
 // Toggles whether or not a clipart image in grocery list is crossed out or not.
