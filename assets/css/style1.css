@@ -7,11 +7,19 @@ ons-card {
   color: #333;
 }
 
+select {
+  background-color: rgba(3,3,3,.09);
+  border: none;
+  border-radius: 5.5px;
+  box-shadow: none;
+  min-height: 20px;
+  margin-top: 5px;
+}
+
 .card__title,
 .card--material__title {
   font-size: 20px;
 }
-
 
 .height {
   padding: 2% 0em;
@@ -62,7 +70,10 @@ img {
 }
 
 .recipeDiv span {
-  max-width: 60%;
+  max-height: 68px;
+  max-width: 65%;
+  overflow: hidden;
+  text-overflow: hidden;
 }
 
 .recipeDiv {
