@@ -150,6 +150,8 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
                     if (selectedRecipe.id == selectedArray[i].id) {
                         buttonText = "Added to List";
                         makeThisRecipe.attr("data-text", "added");
+                        makeThisRecipe.css("color", "blue");
+                        makeThisRecipe.css("background", "lightblue");
                     }
                 }
             }
@@ -181,16 +183,29 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
                 rating.append(star);
             }
 
+            // ======== SERVINGS ========
+
+            selectedRecipe.servings = response.numberOfServings;
+            var servings = $("<div class='detail'>");
+            servings.html(`<h4 class='title'>Servings:</h4> ${selectedRecipe.servings}`);
+
             // ======== INGREDIENTS ========
 
             var ingredients = $("<div class='detail'>");
-            ingredients.html(`<h4>Ingredients:</h4><br>${selectedRecipe.ingredients}`);
+            ingredients.html(`<h4 class="title">Ingredients</h4>`);
+
+            for (var i=0; i<selectedRecipe.ingredients.length; i++) {
+                var ingr = $("<div>");
+                ingr.text(response.ingredientLines[i]);
+                ingredients.append(ingr);
+            }
+
             selectedRecipe.ingredientLines = response.ingredientLines;
 
             // ======== SOURCE INFO ========
 
-            var source = $("<div class='detail'>");
-            source.html(`<h4>Source:</h4> ${response.source.sourceRecipeUrl}`);
+            var source = $("<div class='detail source'>");
+            source.html(`<a href=${response.source.sourceRecipeUrl}>Link to Recipe Source</a>`);
             selectedRecipe.source = response.source.sourceRecipeUrl;
 
             // ======== NUTRITION INFO ========
@@ -208,7 +223,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
             var labelArray = ["Fat", "Sugar", "Fiber", "Carbs",
                 "Vitamin C", "Calcium", "Protein", "Iron"];
 
-            nutritionContainerDiv.html("<h4>Nutrition Info: </h4>");
+            nutritionContainerDiv.html("<h4 class='title'>Nutrition Info</h4>");
 
             // Loop through all elements in nutrition info (usually 50+ of them)
             for (var i = 0; i < nutritionInfo.length; i++) {
@@ -239,11 +254,12 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
             recipeDetail.addClass("recipeDetail");
 
             recipeDetail.append(recipeName);
+            recipeDetail.append(source);
             recipeDetail.append(largeImg);
             recipeDetail.append(rating);
             recipeDetail.append(makeThisRecipe);
+            recipeDetail.append(servings);
             recipeDetail.append(ingredients);
-            recipeDetail.append(source);
             recipeDetail.append(nutritionContainerDiv);
 
             $('#holder').append(recipeDetail);
@@ -323,7 +339,7 @@ $(document).on('tap', '#changeDisplayType', function (event) {
 
     if ($(this).attr("data-displayType") == "text") {
         key = "images";
-        // getClipArt(recipe);
+        getClipArt(recipe);
     }
     else {
         key = "text";
