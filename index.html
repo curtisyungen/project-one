@@ -43,13 +43,57 @@
     <template id="tab1.html">
         <ons-page id="Tab1">
             <p style="text-align: center; margin-top: 10px;">
+
                 <input type="search" value="" id="search" placeholder="Search" class="search-input" style="width: 280px;">
-                <select id="numResults">
+                <select id="numResults" value="10">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
+                <br>
+
+                <select class="select" id="cuisine" value="">
+                    <option value="">Any Cuisine</option>
+                    <option value="american">American</option>
+                    <option value="asian">Asian</option>
+                    <option value="barbecue">Barbecue</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="greek">Greek</option>
+                    <option value="hawaiian">Hawaiian</option>
+                    <option value="indian">Indian</option>
+                    <option value="italian">Italian</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="mexican">Mexican</option>
+                    <option value="thai">Thai</option>
+                    <option value="vietnamese">Vietnamese</option>
+                </select>
+
+                <select class="select" id="diet" value="">
+                    <option value="">Any Diet</option>
+                    <option value="386^Vegan">Vegan</option>
+                    <option value="387^Lacto-ovo vegetarian">Vegetarian</option>
+                    <option value="390^Pescetarian">Pescetarian</option>
+                    <option value="389^Ovo vegetarian">Ovo Vegetarian</option>
+                    <option value="388^Lacto vegetarian">Lacto Vegetarian</option>                       
+                </select>
+
+                <select class="select" id="allergy" value="">
+                    <option value="">No Allergy</option>
+                    <option value="396^Dairy-Free">Dairy</option>
+                    <option value="397^Egg-Free">Egg</option>
+                    <option value="393^Gluten-Free">Gluten</option>
+                    <option value="394^Peanut-Free">Peanut</option>
+                    <option value="398^Seafood-Free">Seafood</option>     
+                    <option value="399^Sesame-Free">Sesame</option> 
+                    <option value="400^Soy-Free">Soy</option> 
+                    <option value="395^Tree Nut-Free">Tree Nut</option> 
+                    <option value="392^Wheat-Free">Wheat</option>                    
+                </select>
+
+                
+                
+                
             </p>
 
             <div id="recipeList"></div>
