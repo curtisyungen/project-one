@@ -37,7 +37,25 @@ $(window).on("load", function () {
 
 //** Event for when user searches for recipe
 
-$(document).on("change", "#search", function () {
+var timerId;
+
+$(document).on("input", "#search", function () {
+
+    clearTimeout(timerId);
+
+    timerId = setTimeout(function() {
+        if ($("#search").val() != "") {
+            search();
+        }
+    }, 500);
+});
+
+$(document).on("change", ".select", function () {
+    search();
+});
+
+
+function search() {
 
     // Clear search result list
 
@@ -47,13 +65,16 @@ $(document).on("change", "#search", function () {
     // Get search criteria
 
     var searchLimit = $("#numResults").val();
-    var searchTerm = $(this).val();
+    var searchTerm = $("#search").val().trim();
+    var cuisine = $("#cuisine").val().trim();
+    var diet = $("#diet").val();
+    var allergy = $("#allergy").val();
 
     // ======== SEARCH RECIPE API QUERY ========
 
     // Search Recipe URL Format: http://api.yummly.com/v1/api/recipes?_app_id=1280f0ef&_app_key=c6dea6bf830227615c86bf87458ee3a8&q=onion
 
-    var searchRecipeUrl = `https://api.yummly.com/v1/api/recipes?_app_id=${APP_ID}&_app_key=${APP_KEY}&maxResult=${searchLimit}&q=${searchTerm}`;
+    var searchRecipeUrl = `https://api.yummly.com/v1/api/recipes?_app_id=${APP_ID}&_app_key=${APP_KEY}&maxResult=${searchLimit}&q=${searchTerm}&allowedCuisine[]=cuisine^cuisine-${cuisine}&allowedDiet[]=${diet}&allowedAllergy[]=${allergy}`;
 
     $.ajax({
         url: searchRecipeUrl,
@@ -94,7 +115,7 @@ $(document).on("change", "#search", function () {
                 $("#recipeList").append(recipeDiv);
             }
         });
-});
+};
 
 // =========================
 // VIEW RECIPE DETAILS
@@ -168,7 +189,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
 
             var rating = $("<div class='detail'>");
 
-            for (var i=0; i<5; i++) {
+            for (var i = 0; i < 5; i++) {
                 var star = $("<span class='fa fa-star'>");
 
                 if (i < selectedRecipe.rating) {
@@ -189,7 +210,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
             var ingredients = $("<div class='detail'>");
             ingredients.html(`<h4 class="title">Ingredients</h4>`);
 
-            for (var i=0; i<selectedRecipe.ingredients.length; i++) {
+            for (var i = 0; i < selectedRecipe.ingredients.length; i++) {
                 var ingr = $("<div>");
                 ingr.text(response.ingredientLines[i]);
                 ingredients.append(ingr);
@@ -202,7 +223,7 @@ function getRecipeDetail(getArrayId, selectedRecipe) {
             var sourceDiv = $("<div id='sourceDiv'>");
 
             var source = $("<a class='source'>");
-            
+
             source.addClass("detail source");
             source.attr("href", `${response.source.sourceRecipeUrl}`);
             source.text("Link to Recipe Source");
@@ -382,7 +403,7 @@ function getClipArt(recipe, recipeDiv) {
             method: "GET",
         })
             .then(function (response) {
-                
+
                 let thumbnail = $('<img>');
                 thumbnail.attr('src', response.items[0].image.thumbnailLink);
                 thumbnail.attr('class', 'clipart');
@@ -402,7 +423,7 @@ function getClipArt(recipe, recipeDiv) {
 function getText(recipe, recipeDiv) {
     var ingrList = recipe.ingredientLines;
 
-    for (var i=recipe.ingredients.length; i >= 0; i--) {
+    for (var i = recipe.ingredients.length; i >= 0; i--) {
 
         var ingr = $("<h5 style='text-align:left;'>");
         ingr.html(ingrList[i]);
