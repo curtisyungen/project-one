@@ -1,22 +1,32 @@
-https://curtisyungen.github.io/project-one/
+# Grocery List
+### a simple way to search for Recipes and add their ingredients to a Grocery List. It uses the Yummly API to access recipe data.
 
-Grocery List Generator App
+<br/>
 
-User can search for recipes
-Select a recipe
-Choose to make this recipe
+### Web Use
 
-Grocery list is generated
+Simply visit **[this heroku link](https://recipe-to-grocery-list.herokuapp.com)**!
 
-Items in list:
-	Name of item
-	Image of item
-	Price of item
+<br/><br/>
 
-Items can be checked off by clicking on them
+### Local Use
+Command-Line:
+1. git https://github.com/curtisyungen/Grocery-List
+2. cd project-one
+3. npm install
+4. node server.js
+5. visit localhost:3000
 
-Total price for recipe is also displayed
 
-******
+Browser:
+1. visit localhost:8080
 
-Uses Edamam API for gathering recipes, ingredients
+<br/><br/>
+
+### Noteworthy tech used:
+-mySQL </br>
+-sequelize </br>
+-express </br>
+-handlebars </br>
+-axios </br>
+-yummly API </br>
