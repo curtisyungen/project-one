@@ -19,4 +19,4 @@ Total price for recipe is also displayed
 
 ******
 
-Uses Edamam API for gathering recipes, ingredients
+
